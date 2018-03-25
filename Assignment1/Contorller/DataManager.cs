@@ -57,9 +57,9 @@ namespace Assignment1.Contorller
             //fetch data into the List
             foreach (DataRow row in InventoryTable.Rows)
             {
-                string pName = row["Name"].ToString();
-                string pID = row["InventoryID"].ToString();
-                string pStock = row["CurrentStock"].ToString();
+                var pName = row["Name"].ToString();
+                var pID = row["InventoryID"].ToString();
+                var pStock = row["CurrentStock"].ToString();
 
                 Inventory item = new Inventory((Int32.Parse(pID), pName, Int32.Parse(pStock));
                 Items.Add(item);

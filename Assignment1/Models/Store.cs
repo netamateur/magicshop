@@ -7,11 +7,12 @@ namespace Assignment1
 {
     class Store
     {
-        public int StoreID { get; set; }
+        private int StoreID { get; set; }
 
-        public string Name { get; set; }
+        private string Name { get; set; }
 
-        public ProductTypes Products { get; set; }
+        private ProductTypes Products { get; set; }
+
 
     }
 }
