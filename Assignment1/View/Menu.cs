@@ -8,10 +8,15 @@ namespace Assignment1
 {
     public class Menu
     {
+
+
+
+        
         public static void DisplayMainMenu()
         {
             while (true)
             {
+                
                 Console.WriteLine("Welcome to Marvelous Magic");
                 Console.WriteLine("==========================");
                 Console.WriteLine("1. Owner");
@@ -46,6 +51,7 @@ namespace Assignment1
         {
             while (true)
             {
+                
                 Console.WriteLine("Welcome to Marvelous Magic (Owner)");
                 Console.WriteLine("==========================");
                 Console.WriteLine("1. Display ALl Stock Requests");
@@ -53,8 +59,16 @@ namespace Assignment1
                 Console.WriteLine("3. Reset Inventory Item Stock");
                 Console.WriteLine("4. Return to Main Menu");
                 Console.WriteLine("Enter an option:");
-
+        
                 var input = Console.ReadLine();
+
+                //check if the input valid 
+                if (!int.TryParse(input, out var option) || option < 1 || option >3 )
+                {
+                    Console.WriteLine("Invalid input.");
+                    Console.WriteLine();
+                    continue;
+                }
 
                 switch (input)
                 {
