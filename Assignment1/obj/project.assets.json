@@ -1093,36 +1093,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Rita\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/macbook/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
-    "restoreSettings": {
-      "hideWarningsAndErrors": true
-    },
     "restore": {
-      "projectUniqueName": "D:\\RMIT\\SEM 1 - 2018\\Web Dev Tech\\ASSIGNMENT\\Assignment1\\Assignment1\\Assignment1.csproj",
+      "projectUniqueName": "/Users/macbook/Documents/GitHub/magicshop/Assignment1/Assignment1.csproj",
       "projectName": "Assignment1",
-      "projectPath": "D:\\RMIT\\SEM 1 - 2018\\Web Dev Tech\\ASSIGNMENT\\Assignment1\\Assignment1\\Assignment1.csproj",
-      "packagesPath": "C:\\Users\\Rita\\.nuget\\packages\\",
-      "outputPath": "D:\\RMIT\\SEM 1 - 2018\\Web Dev Tech\\ASSIGNMENT\\Assignment1\\Assignment1\\obj\\",
+      "projectPath": "/Users/macbook/Documents/GitHub/magicshop/Assignment1/Assignment1.csproj",
+      "packagesPath": "/Users/macbook/.nuget/packages/",
+      "outputPath": "/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Rita\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "/Users/macbook/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1140,13 +1132,14 @@
       "netcoreapp2.0": {
         "dependencies": {
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
-            "version": "[2.0.0, )",
+            "version": "2.0",
             "autoReferenced": true
           },
           "System.Data.SqlClient": {
             "target": "Package",
-            "version": "[4.4.3, )"
+            "version": "4.4.3"
           }
         },
         "imports": [

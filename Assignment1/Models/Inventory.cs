@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Assignment1
 {
+    /*The Inventory class actually indicates the OwnerInventory*/
     public class Inventory
     {
-        public int ProductID { get; }
-        public string ProductName { get; }
-        public int StockLevel { get; }
+        private int ProductID { get; }
+        private string ProductName { get; }
+        private int StockLevel { get; }
 
         public Inventory(int productID, string productName, int stockLevel)
         {
