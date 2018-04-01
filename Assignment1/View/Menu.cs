@@ -10,7 +10,7 @@ namespace Assignment1
     {
 
 
-
+        /*
         
         public static void DisplayMainMenu()
         {
@@ -183,5 +183,6 @@ namespace Assignment1
         public Inventory GetItem(int inventoryID) => Items.FirstOrDefault(x => x.InventoryID == inventoryID);
 
 
+    }*/
     }
 }
