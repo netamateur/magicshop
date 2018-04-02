@@ -29,9 +29,11 @@ namespace Assignment1.Models
         public void checkStoreInventory(int storeID)
         {
             string query = "select Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
+            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+            conn.Open();
 
             //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, new SqlConnection(dm.ConnectionString));
+            SqlCommand commd = new SqlCommand(query, conn);
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@storeID";
             param.SqlDbType = SqlDbType.Int;
@@ -40,7 +42,8 @@ namespace Assignment1.Models
 
             commd.Parameters.Add(param);
 
-            try{
+            try
+            {
                 var FranchiseHolderTable = dm.GetTable(commd);
 
                 foreach (DataRow row in FranchiseHolderTable.Rows)
@@ -59,11 +62,14 @@ namespace Assignment1.Models
 
                 }
 
-
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
 
         }
@@ -73,9 +79,11 @@ namespace Assignment1.Models
         public void getStockThreshold(int threshold, int currentStoreId)
         {
             string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel > @threshold;";
+            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+            conn.Open();
 
             //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, new SqlConnection(dm.ConnectionString));
+            SqlCommand commd = new SqlCommand(query, conn);
 
             //commd.Parameters.Add("@currentStoreId", SqlDbType.Int);
             //commd.Parameters.Add("@threshold", SqlDbType.Int);
@@ -118,6 +126,10 @@ namespace Assignment1.Models
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
 
         }
