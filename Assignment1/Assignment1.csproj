@@ -11,6 +11,5 @@
 
   <ItemGroup>
     <Folder Include="View\" />
-    <Folder Include="Contorller\" />
   </ItemGroup>
 </Project>

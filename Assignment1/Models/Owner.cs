@@ -104,6 +104,7 @@ namespace Assignment1
                     }else
                     {
                         Console.WriteLine("The stock level of selected product is already 20 or above.");
+
                     }//end of nested filter
                    
 
@@ -111,10 +112,7 @@ namespace Assignment1
 
 
             }//end of foreach loop
-
-
-
-           
+                  
         }
 
 
