@@ -5,14 +5,15 @@ using System.Text;
 
 namespace Assignment1
 {
-    class Store
+    public class Store
     {
-        private int StoreID { get; set; }
+        public int StoreID { get; set; }
 
-        private string Name { get; set; }
+        public string Name { get; set; }
 
-        private ProductTypes Products { get; set; }
+        //private ProductTypes Products { get; set; }
 
+       
 
     }
 }

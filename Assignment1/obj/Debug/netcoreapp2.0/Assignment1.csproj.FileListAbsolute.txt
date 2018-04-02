@@ -1,11 +1,22 @@
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\bin\Debug\netcoreapp2.0\Assignment1.deps.json
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\bin\Debug\netcoreapp2.0\Assignment1.runtimeconfig.json
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\bin\Debug\netcoreapp2.0\Assignment1.runtimeconfig.dev.json
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\bin\Debug\netcoreapp2.0\Assignment1.dll
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\bin\Debug\netcoreapp2.0\Assignment1.pdb
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\obj\Debug\netcoreapp2.0\Assignment1.csprojResolveAssemblyReference.cache
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\obj\Debug\netcoreapp2.0\Assignment1.csproj.CoreCompileInputs.cache
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\obj\Debug\netcoreapp2.0\Assignment1.AssemblyInfoInputs.cache
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\obj\Debug\netcoreapp2.0\Assignment1.AssemblyInfo.cs
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\obj\Debug\netcoreapp2.0\Assignment1.dll
-D:\RMIT\SEM 1 - 2018\Web Dev Tech\ASSIGNMENT\Assignment1\Assignment1\obj\Debug\netcoreapp2.0\Assignment1.pdb
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.deps.json
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.runtimeconfig.json
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.runtimeconfig.dev.json
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.dll
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.pdb
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.csprojResolveAssemblyReference.cache
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.csproj.CoreCompileInputs.cache
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.AssemblyInfoInputs.cache
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.AssemblyInfo.cs
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.dll
+D:/RMIT/SEM 1 - 2018/Web Dev Tech/ASSIGNMENT/Assignment1/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.pdb
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.csprojResolveAssemblyReference.cache
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.csproj.CoreCompileInputs.cache
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.AssemblyInfoInputs.cache
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.AssemblyInfo.cs
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.dll
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/obj/Debug/netcoreapp2.0/Assignment1.pdb
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.deps.json
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.runtimeconfig.json
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.runtimeconfig.dev.json
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.dll
+/Users/macbook/Documents/GitHub/magicshop/Assignment1/bin/Debug/netcoreapp2.0/Assignment1.pdb

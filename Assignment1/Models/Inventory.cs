@@ -8,13 +8,13 @@ namespace Assignment1
     public class Inventory
     {
         private int ProductID { get; }
-        private string ProductName { get; }
+        public string productName { get; }
         private int StockLevel { get; }
 
-        public Inventory(int productID, string productName, int stockLevel)
+        public Inventory(int productID, string pName, int stockLevel)
         {
             ProductID = productID;
-            ProductName = productName;
+            productName = pName;
             StockLevel = stockLevel;
         }
     }

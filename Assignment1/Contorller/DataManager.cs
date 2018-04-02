@@ -11,62 +11,86 @@ namespace Assignment1.Contorller
 
     public class DataManager
     {
-        public List<Inventory> Items = new List<Inventory>(); 
 
-        //private constructor: Singleton Pattern
+
+        public string ConnectionString = "server=wdt2018.australiaeast.cloudapp.azure.com;uid=s3419529;database=s3419529;pwd=abc123;";
+
+        //Constructor
         private DataManager()
         {
-            //create a connection object
-            string ConnectonString = "server=wdt2018.australiaeast.cloudapp.azure.com;uid=s3419529;database=s3419529;pwd=abc123;";
+            //SqlConnection conn = new SqlConnection(ConnectionString);
+            //conn.Open();
 
-            SqlConnection conn = new SqlConnection(ConnectonString);
+        }
 
-            //open the connection
-            conn.Open();
 
-            //create a DataAdpater for Inventory table
-            SqlDataAdapter InventoryAdapter = new SqlDataAdapter("select * from Inventory", conn);
 
-            // the CommandBuilder object
-            SqlCommandBuilder commandBld = new SqlCommandBuilder(InventoryAdapter);
-
-            //create a Dataset object
-            DataSet dataset = new DataSet("InventorySet");
-
+        /* R -- retrive */
+        //fetch table by query and connectionString
+        public DataTable fetchData(string query, string connString){
             try
             {
-                // InventoryTable is the name of the DataTable object within Dataset
-                InventoryAdapter.Fill(dataset, "InventoryTable");
+                
+                SqlConnection conn = new SqlConnection(connString);
+                SqlCommand comd = new SqlCommand(query, conn);
+                conn.Open();
 
+                DataSet ds = new DataSet();
+                DataTable table = new DataTable("Table");//need to register a new table for next fetch
+                SqlDataAdapter da = new SqlDataAdapter(comd);
+                da.Fill(ds,"Table");
+                table = ds.Tables["Table"];
+
+                conn.Close();
+                conn.Dispose();
+
+                return table;
             }
-            catch (SqlException se)
+            catch (Exception ex)
             {
-                Console.WriteLine("SQL Exception: {0}", se.Message);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: {0}", e.Message);
-            }
-            finally
-            {
-            }
-
-            //create a table object
-            DataTable InventoryTable = dataset.Tables["InventoryTable"];
-
-            //fetch data into the List
-            foreach (DataRow row in InventoryTable.Rows)
-            {
-                var pName = row["Name"].ToString();
-                var pID = row["InventoryID"].ToString();
-                var pStock = row["CurrentStock"].ToString();
-
-                Inventory item = new Inventory((Int32.Parse(pID), pName, Int32.Parse(pStock));
-                Items.Add(item);
-
+                Console.WriteLine("Exception: {0}", ex.Message);
+                return null;
             }
 
         }
+
+        //A method fetch the table BY Command obj
+        public DataTable GetTable(SqlCommand cmmd){
+
+            var table = new DataTable();
+  
+            new SqlDataAdapter(cmmd).Fill(table);
+
+            return table;
+        }
+
+
+
+        /* U - update */
+        public int updateData(string query, string connString)
+        {
+            int update = 0;
+            try
+            {
+                SqlConnection conn = new SqlConnection(connString);
+                SqlCommand comd = new SqlCommand(query, conn);
+                conn.Open();
+                update = comd.ExecuteNonQuery();
+                conn.Close();
+
+                return update;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: {0}", ex.Message);
+                return -1;
+            }
+
+        }
+
+
+
 
         //Singleton pattern signature method
         public static DataManager GetDataManager(){
