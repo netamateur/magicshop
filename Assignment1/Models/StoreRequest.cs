@@ -18,7 +18,7 @@ namespace Assignment1.Models
             store.StoreID = storeID;
             prodID = productID;
             requestQuantity = quantity;
-            
+
         }
 
 
