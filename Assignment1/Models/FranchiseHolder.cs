@@ -30,9 +30,11 @@ namespace Assignment1.Models
         public void checkStoreInventory(int storeID)
         {
             string query = "select Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
+            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+            conn.Open();
 
             //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, new SqlConnection(dm.ConnectionString));
+            SqlCommand commd = new SqlCommand(query, conn);
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@storeID";
             param.SqlDbType = SqlDbType.Int;
@@ -61,10 +63,14 @@ namespace Assignment1.Models
                 }
 
 
+
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
+            }
+            finally{
+                conn.Close();
             }
 
         }
@@ -72,7 +78,7 @@ namespace Assignment1.Models
 
 
 
-        //make stock request to owner
+        //add new stock request to owner
 
 
 

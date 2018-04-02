@@ -90,7 +90,23 @@ namespace Assignment1.Contorller
         }
 
 
+        public int updateData(SqlCommand command)
+        {
+            int update = 0;
+            try
+            {
+                update = command.ExecuteNonQuery();
 
+                return update;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: {0}", ex.Message);
+                return -1;
+            }
+
+        }
 
         //Singleton pattern signature method
         public static DataManager GetDataManager(){
