@@ -48,7 +48,7 @@ namespace Assignment1
 
             var newRequest = new StockRequest();
 
-            newRequest.addStockRequest(Int32.Parse(requestPID));
+            newRequest.addStockRequest(Int32.Parse(requestPID), Int32.Parse(threshold));
 
 
 

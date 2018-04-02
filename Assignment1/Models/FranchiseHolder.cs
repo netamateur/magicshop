@@ -28,7 +28,7 @@ namespace Assignment1.Models
         //check store inventory
         public void checkStoreInventory(int storeID)
         {
-            string query = "select Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
+            string query = "SELECT Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
 

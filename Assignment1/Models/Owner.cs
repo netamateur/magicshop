@@ -16,13 +16,11 @@ namespace Assignment1
         //Display owner's inventory
         public static void checkOwnerInventory()
         {
-
             string query =
             "select product.ProductID, product.Name, OwnerInventory.StockLevel from product JOIN OwnerInventory ON Product.ProductID = OwnerInventory.ProductID;";
 
             try
             {
-
                 var ownerTable = dm.fetchData(query, dm.ConnectionString);
 
                 foreach (DataRow row in ownerTable.Rows)
@@ -53,6 +51,7 @@ namespace Assignment1
 
 
         //Display all the stock request
+
         /*
         public static List<StoreRequest> GetRequests()
         {
@@ -91,7 +90,7 @@ namespace Assignment1
                             conn.Close();
 
                             Console.WriteLine("The number of rows have been updated:" + affectedRow);
-                            Console.WriteLine("{0} stock level has been reset to 20.", item.productName);
+                            Console.WriteLine("{0} stock level has been reset to 20.", item.ProductName);
 
                         }
                         catch (Exception e)
