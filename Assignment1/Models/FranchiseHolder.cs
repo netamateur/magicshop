@@ -13,6 +13,8 @@ namespace Assignment1.Models
         public Store store { get; set; }
         private DataManager dm = DataManager.GetDataManager();
         public List<Inventory> StoreItems = new List<Inventory>();
+        public List<Inventory> OptionalItems = new List<Inventory>();
+
         public enum storeList{MelbourneCBD=1,EastMelbourne=2,NorthMelbourne=3,SouthMelbourne=4,WestMelbourne=5 }
 
         public List<Inventory> thresholdItems = new List<Inventory>();
@@ -75,7 +77,7 @@ namespace Assignment1.Models
         }
 
 
-        //make stock request to owner
+        //View Stock Request Threshold
         public void getStockThreshold(int threshold, int currentStoreId)
         {
             string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel > @threshold;";
@@ -134,6 +136,42 @@ namespace Assignment1.Models
 
         }
 
+        //Add Stock Request to Owner - Threshold
+        public void addStockRequest(int productID, int quantity)
+        {
+            //add to stockrequest table
+            string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @threshold);";
+
+            foreach (Inventory item in StoreItems)
+            {
+                //check if inserted id is same as productID in that store
+                if (productID == item.ProductID)
+                {
+                    try
+                    {
+                        SqlConnection connect = new SqlConnection(dm.ConnectionString);
+                        connect.Open();
+
+                        SqlCommand cmd = new SqlCommand(query, connect);
+
+                        //Parametized SQL
+                        cmd.CreateParameter();
+                        cmd.Parameters.AddWithValue("productID", productID);
+                        cmd.Parameters.AddWithValue("storeID", store.StoreID);
+                        cmd.Parameters.AddWithValue("quantity", quantity);
+
+                        var affectedRow = dm.updateData(cmd);
+                        connect.Close();
+
+                        Console.WriteLine("Stock Request Created.");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exception: {0}", e.Message);
+                    }
+                }
+            }
+        }
 
 
         //add new inventory item

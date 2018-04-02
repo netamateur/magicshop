@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using Assignment1.Controller;
+using Assignment1.Models;
 
 namespace Assignment1
 {
@@ -51,7 +52,35 @@ namespace Assignment1
 
 
         //Display all the stock request
+        public void getStockRequestTable()
+        {
+            string query = "SELECT * FROM StockRequest;";
 
+            try
+            {
+                var requestTable = dm.fetchData(query, dm.ConnectionString);
+
+                foreach (DataRow row in requestTable.Rows)
+                {
+                    var rID = row["StockRequesetID"].ToString();
+                    var sID = row["StoreID"].ToString();
+                    var pID = row["ProductID"].ToString();
+                    var pQuantity = row["Quantity"].ToString();
+
+                    StockRequest item = new StockRequest(Int32.Parse(rID), Int32.Parse(sID), Int32.Parse(pID), Int32.Parse(pQuantity));
+
+                    item.requestItems.Add(item);
+
+                    Console.WriteLine("{0} {1} {2}\n",
+                                  row["ProductID"],
+                                  row["Name"], row["StockLevel"]);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e.Message);
+            }
+        }
         /*
         public static List<StoreRequest> GetRequests()
         {
