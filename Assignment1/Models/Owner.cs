@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Data.SqlClient;
 using Assignment1.Contorller;
 
 namespace Assignment1
@@ -12,18 +13,15 @@ namespace Assignment1
         private static DataManager dm = DataManager.GetDataManager();
         private static List<Inventory> OwnerItems = new List<Inventory>(); 
 
-        //get data from Inventory table
-
+        //Display owner's inventory
         public static void checkOwnerInventory()
         {
-
-
+            
           string query = 
           "select product.ProductID, product.Name, OwnerInventory.StockLevel from product JOIN OwnerInventory ON Product.ProductID = OwnerInventory.ProductID;";
 
             try
             {
-
 
                 var ownerTable = dm.fetchData(query, dm.ConnectionString);
 
@@ -53,6 +51,8 @@ namespace Assignment1
 
         }
 
+
+        //Display all the stock request
         /*
         public static List<StoreRequest> GetRequests()
         {
@@ -60,12 +60,63 @@ namespace Assignment1
 
         }*/
 
-        //reset item stock to 20 
-        public static void resetTo20()
+        //reset item stock to 20 by taking productID
+        public static void resetTo20(int productID)
         {
-           
+            string query = "update OwnerInventory set StockLevel = 20 where ProductID = @productID;";
 
+          
+            //match the input id by looping the list
+            foreach(Inventory item in OwnerItems)
+            {
+                
+                //check if the product ID is same
+                if(productID == item.ProductID)
+                {
+                    //if true, check if stock level less than 20
+                    if(item.StockLevel<20)
+                    {
+                        try
+                        {
+                            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+                            conn.Open();
+
+                            SqlCommand commd = new SqlCommand(query, conn);
+
+                            //Parameterized SQL
+                            commd.CreateParameter();
+                            commd.Parameters.AddWithValue("productID", productID);
+
+                            //update the stocklevel
+                            var affectedRow = dm.updateData(commd);
+
+                            conn.Close();
+
+                            Console.WriteLine("The number of rows have been updated:" + affectedRow);
+                            Console.WriteLine("{0} stock level has been reset to 20.", item.productName);
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Exception: {0}", e.Message);
+                        }
+
+                    }else
+                    {
+                        Console.WriteLine("The stock level of selected product is already 20 or above.");
+                    }//end of nested filter
+                   
+
+                }//end of filter
+
+
+            }//end of foreach loop
+
+
+
+           
         }
+
 
         //process request and then delete request after processing
         //check availablity

@@ -32,8 +32,8 @@ namespace Assignment1
 
 
 
-            //Owner.checkOwnerInventory();
 
+            /*
             var admin = new FranchiseHolder();
 
             Console.WriteLine("Please input the store id: ");
@@ -48,7 +48,14 @@ namespace Assignment1
             var id2 = Console.ReadLine();
             Console.WriteLine("2- East Melbourne");
 
-            admin.checkStoreInventory(Int32.Parse(id2));
+            admin.checkStoreInventory(Int32.Parse(id2)); */
+
+            Owner.checkOwnerInventory();
+
+            Console.WriteLine("please enter the product id:");
+            var productID = Console.ReadLine();
+            Owner.resetTo20(Int32.Parse(productID));
+
 
             }
 
