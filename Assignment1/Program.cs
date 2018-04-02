@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using Assignment1.Contorller;
 using Assignment1.Models;
-
 
 
 namespace Assignment1
 {
     class Program
     {
-        
 
         static void Main(string[] args)
         {
@@ -44,8 +41,15 @@ namespace Assignment1
             admin.getStockThreshold(Int32.Parse(threshold), 1);
 
 
+
+
             Console.WriteLine("Enter request to process: ");
-            var productRequest = Console.ReadLine();
+            var requestPID = Console.ReadLine();
+
+            var newRequest = new StockRequest();
+
+            newRequest.addStockRequest(Int32.Parse(requestPID));
+
 
 
 

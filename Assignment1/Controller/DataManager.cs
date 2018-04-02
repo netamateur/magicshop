@@ -5,10 +5,8 @@ using System.Data.SqlClient;
 using Assignment1.Models;
 
 
-namespace Assignment1.Contorller
+namespace Assignment1.Controller
 {
-
-
     public class DataManager
     {
 

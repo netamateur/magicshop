@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using Assignment1.Contorller;
+using Assignment1.Controller;
 
 
 namespace Assignment1.Models
@@ -15,7 +15,7 @@ namespace Assignment1.Models
         public List<Inventory> StoreItems = new List<Inventory>();
         public enum storeList{MelbourneCBD=1,EastMelbourne=2,NorthMelbourne=3,SouthMelbourne=4,WestMelbourne=5 }
 
-        public List<Inventory> requestItems = new List<Inventory>();
+        public List<Inventory> thresholdItems = new List<Inventory>();
 
         //Franchise Holder should take store obj as parameters to construct
         public FranchiseHolder()
@@ -108,7 +108,7 @@ namespace Assignment1.Models
 
                     Inventory item = new Inventory(Int32.Parse(pID), pName, Int32.Parse(pStock));
 
-                    requestItems.Add(item);
+                    thresholdItems.Add(item);
 
                     Console.WriteLine("{0} {1} {2}\n",
                                   row["ProductID"],
