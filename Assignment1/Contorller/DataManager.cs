@@ -12,7 +12,6 @@ namespace Assignment1.Contorller
     public class DataManager
     {
 
-
         public string ConnectionString = "server=wdt2018.australiaeast.cloudapp.azure.com;uid=s3419529;database=s3419529;pwd=abc123;";
 
         //Constructor

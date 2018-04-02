@@ -36,21 +36,37 @@ namespace Assignment1
 
             var admin = new FranchiseHolder();
 
-            Console.WriteLine("Please input the store id: ");
+            Console.WriteLine("Enter threshold for re-stocking: ");
+            var threshold = Console.ReadLine();
 
-            var id1 = Console.ReadLine();
+            Console.WriteLine("All inventory stock levels are equal to or above: " + threshold);
 
-            Console.WriteLine("1- Melbourne CBD");
-            admin.checkStoreInventory(Int32.Parse(id1));
+            admin.getStockThreshold(Int32.Parse(threshold), 1);
 
-            Console.WriteLine("Please input the store id: ");
 
-            var id2 = Console.ReadLine();
-            Console.WriteLine("2- East Melbourne");
+            Console.WriteLine("Enter request to process: ");
+            var productRequest = Console.ReadLine();
 
-            admin.checkStoreInventory(Int32.Parse(id2));
 
-            }
+
+
+            Console.Read();
+
+            //Console.WriteLine("Please input the store id: ");
+
+            //var id1 = Console.ReadLine();
+
+            //Console.WriteLine("1- Melbourne CBD");
+            //admin.checkStoreInventory(Int32.Parse(id1));
+
+            //Console.WriteLine("Please input the store id: ");
+
+            //var id2 = Console.ReadLine();
+            //Console.WriteLine("2- East Melbourne");
+
+            //admin.checkStoreInventory(Int32.Parse(id2));
+
+        }
 
         }
 

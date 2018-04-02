@@ -7,6 +7,8 @@ namespace Assignment1.Models
     
         public enum ProductTypes
         {
+
+ 
             Rabbit = 1,
             Hat = 2,
             SvengaliDeck = 3,
