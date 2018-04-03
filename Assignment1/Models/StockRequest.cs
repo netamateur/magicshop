@@ -6,7 +6,7 @@ using Assignment1.Controller;
 
 namespace Assignment1.Models
 {
-    public class StoreRequest
+    public class StockRequest
     {
         internal string requestID;
         internal int requestQuantity;
@@ -16,7 +16,7 @@ namespace Assignment1.Models
         internal IEnumerable<Inventory> StoreInventory { get; }
 
         private DataManager dm = DataManager.GetDataManager();
-        public List<StockRequest> requestItems = new List<StockRequest>();
+        //public List<StockRequest> requestItems = new List<StockRequest>();
 
         public StockRequest()
         {
@@ -25,7 +25,6 @@ namespace Assignment1.Models
             //prodID = productID;
             //requestQuantity = quantity;
         }
-
 
         public void addStockRequest(int productID)
         {
@@ -64,6 +63,9 @@ namespace Assignment1.Models
             }
 
         }
+
+    }
+       
 
     }
 }
