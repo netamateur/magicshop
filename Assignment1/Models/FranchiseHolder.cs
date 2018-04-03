@@ -80,15 +80,12 @@ namespace Assignment1.Models
         //View Stock Request Threshold
         public void getStockThreshold(int threshold, int currentStoreId)
         {
-            string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel > @threshold;";
+            string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel < @threshold;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
 
             //parameterized Sql
             SqlCommand commd = new SqlCommand(query, conn);
-
-            //commd.Parameters.Add("@currentStoreId", SqlDbType.Int);
-            //commd.Parameters.Add("@threshold", SqlDbType.Int);
 
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@threshold";
@@ -101,7 +98,6 @@ namespace Assignment1.Models
             param2.SqlDbType = SqlDbType.Int;
             param2.Direction = ParameterDirection.Input;
             param2.Value = currentStoreId;
-
 
             commd.Parameters.Add(param);
             commd.Parameters.Add(param2);
@@ -136,17 +132,17 @@ namespace Assignment1.Models
 
         }
 
-        //Add Stock Request to Owner - Threshold
-        public void addStockRequest(int productID, int quantity)
+        //Add Stock Request to Owner - Threshold--- remove storeID
+        public void addStockRequest(int productID, int quantity, int storeID)
         {
             //add to stockrequest table
-            string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @threshold);";
+            string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @quantity);";
 
-            foreach (Inventory item in StoreItems)
-            {
-                //check if inserted id is same as productID in that store
-                if (productID == item.ProductID)
-                {
+            //foreach (Inventory item in StoreItems)
+            //{
+            //    check if inserted id is same as productID in that store
+            //    if (productID == item.ProductID)
+            //    {
                     try
                     {
                         SqlConnection connect = new SqlConnection(dm.ConnectionString);
@@ -157,7 +153,7 @@ namespace Assignment1.Models
                         //Parametized SQL
                         cmd.CreateParameter();
                         cmd.Parameters.AddWithValue("productID", productID);
-                        cmd.Parameters.AddWithValue("storeID", store.StoreID);
+                        cmd.Parameters.AddWithValue("currentstoreID", storeID);
                         cmd.Parameters.AddWithValue("quantity", quantity);
 
                         var affectedRow = dm.updateData(cmd);
@@ -169,8 +165,8 @@ namespace Assignment1.Models
                     {
                         Console.WriteLine("Exception: {0}", e.Message);
                     }
-                }
-            }
+            //    }
+            //}
         }
 
 

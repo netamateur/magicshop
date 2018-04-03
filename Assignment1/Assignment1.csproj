@@ -11,6 +11,6 @@
 
   <ItemGroup>
     <Folder Include="View\" />
-    <Folder Include="Contorller\" />
+    <Folder Include="Controller\" />
   </ItemGroup>
 </Project>

@@ -44,11 +44,11 @@ namespace Assignment1
 
 
             Console.WriteLine("Enter request to process: ");
+            //check user input to threshold table productID
+            //check user input to productID exists in that store
             var requestPID = Console.ReadLine();
 
-            var newRequest = new StockRequest();
-
-            newRequest.addStockRequest(Int32.Parse(requestPID), Int32.Parse(threshold));
+            admin.addStockRequest(Int32.Parse(requestPID), Int32.Parse(threshold), 1);
 
 
 
