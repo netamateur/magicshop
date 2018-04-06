@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assignment1
+namespace Assignment1.Models
 {
     /*The Inventory class actually indicates the OwnerInventory*/
     public class Inventory

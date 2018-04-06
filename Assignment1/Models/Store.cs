@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assignment1
+namespace Assignment1.Models
 {
     public class Store
     {

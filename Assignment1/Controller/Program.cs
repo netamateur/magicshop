@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using Assignment1.Contorller;
+//using Assignment1.Controller;
 using Assignment1.Models;
 
 
 
-namespace Assignment1
+namespace Assignment1.Controller
 {
     class Program
     {
@@ -33,16 +33,59 @@ namespace Assignment1
 
 
 
+
+            //var admin = new FranchiseHolder();
+
+            //Console.WriteLine("Please input the store id: ");
+
+            //var storeId = Console.ReadLine();
+
+            //Console.WriteLine("Display the optional list");
+            //admin.checkOwnerItem(Int32.Parse(storeId)); //Exception: Column 'Name' does not belong to table .
+
+            //Console.WriteLine("Please input the product you want to increase: ");
+
+            //var productID = Console.ReadLine();
+            //admin.addStockRequest(Int32.Parse(productID), 1, Int32.Parse(storeId));
+
+            Console.WriteLine("Owner: I would like to see my Inventory.\n");
+
+            Owner.checkOwnerInventory();
+
+            Console.WriteLine("Owner: I would like to see all the stock request.\n");
+            Owner.displayOwnerRequest();
+            foreach (Owner.OwnerRequest temp in Owner.displayOwnerRequest())
+            {
+                Console.WriteLine("{0} {1} {2} {3} {4} {5}\n",
+                                          temp.request.requestID,
+                                          temp.request.storeID,
+                                          temp.productName,
+                                          temp.request.requestQuantity,
+                                          temp.currentOwnerStock,
+                                          temp.availability);
+
+            }
+            //Exception: Column 'StockRequesetID' does not belong to table Table.
+            //Owner.getStockRequestTable();
+
+            /* test the fetchData() work well
+            string query = "select * from StockRequest;";
+
+
+            string Connection = DataManager.GetDataManager().ConnectionString;
+
+            var table = DataManager.GetDataManager().fetchData(query, Connection);
+
+            foreach (DataRow row in table.Rows)
+            {
+                Console.WriteLine("{0} {1} {2} {3}\n",
+                                  row["StockRequestID"],
+                                  row["StoreID"],
+                                  row["ProductID"],
+                                  row["Quantity"]);
+            } */
+
             /*
-            var admin = new FranchiseHolder();
-
-            Console.WriteLine("Please input the store id: ");
-
-            var id1 = Console.ReadLine();
-
-            Console.WriteLine("1- Melbourne CBD");
-            admin.checkStoreInventory(Int32.Parse(id1));
-
             Console.WriteLine("Please input the store id: ");
 
             var id2 = Console.ReadLine();
@@ -50,11 +93,16 @@ namespace Assignment1
 
             admin.checkStoreInventory(Int32.Parse(id2)); */
 
+            /*
             Owner.checkOwnerInventory();
 
-            Console.WriteLine("please enter the product id:");
+            Console.WriteLine("Please enter the productID:"); */
+           /*
             var productID = Console.ReadLine();
-            Owner.resetTo20(Int32.Parse(productID));
+            Owner.resetTo20(Int32.Parse(productID)); */
+
+
+
 
 
             }

@@ -18,7 +18,7 @@ namespace Assignment1.Models
 
         public List<Inventory> thresholdItems = new List<Inventory>();
 
-        public enum storeList{MelbourneCBD=1,EastMelbourne,NorthMelbourne,SouthMelbourne,WestMelbourne }
+        public enum storeList { MelbourneCBD = 1, EastMelbourne, NorthMelbourne, SouthMelbourne, WestMelbourne }
 
 
 
@@ -26,7 +26,7 @@ namespace Assignment1.Models
         public FranchiseHolder()
         {
             //store.StoreID = storeID;
-          
+
         }
 
 
@@ -37,7 +37,8 @@ namespace Assignment1.Models
             string query = "select Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
 
 
-            try{
+            try
+            {
                 SqlConnection conn = new SqlConnection(dm.ConnectionString);
                 conn.Open();
 
@@ -76,26 +77,23 @@ namespace Assignment1.Models
             {
                 Console.WriteLine("Exception: {0}", e.Message);
             }
-           
+
 
         }
-
-
 
 
 
         //View Stock Request Threshold
         public void getStockThreshold(int threshold, int currentStoreId)
         {
-            string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel > @threshold;";
+            /* double check the query: the "Stocklevel > threshold" is not correct? */
+            string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel < @threshold;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
 
             //parameterized Sql
             SqlCommand commd = new SqlCommand(query, conn);
 
-            //commd.Parameters.Add("@currentStoreId", SqlDbType.Int);
-            //commd.Parameters.Add("@threshold", SqlDbType.Int);
 
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@threshold";
@@ -144,96 +142,137 @@ namespace Assignment1.Models
         }
 
         //Add new stock request to owner or
-        //Add Stock Request to Owner - Threshold
-        public void addStockRequest(int productID, int quantity)
+        //Add Stock Request to Owner - Threshold --- update by Rita
+        public void addStockRequest(int productID, int quantity, int storeID)
         {
             //add to stockrequest table
-            string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @threshold);";
+            string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @quantity);";
 
-            foreach (Inventory item in StoreItems)
+            try
             {
-                //check if inserted id is same as productID in that store
-                if (productID == item.ProductID)
-                {
-                    try
-                    {
-                        SqlConnection connect = new SqlConnection(dm.ConnectionString);
-                        connect.Open();
+                SqlConnection connect = new SqlConnection(dm.ConnectionString);
+                connect.Open();
 
-                        SqlCommand cmd = new SqlCommand(query, connect);
+                SqlCommand cmd = new SqlCommand(query, connect);
 
-                        //Parametized SQL
-                        cmd.CreateParameter();
-                        cmd.Parameters.AddWithValue("productID", productID);
-                        cmd.Parameters.AddWithValue("storeID", store.StoreID);
-                        cmd.Parameters.AddWithValue("quantity", quantity);
+                //Parametized SQL
+                cmd.CreateParameter();
+                cmd.Parameters.AddWithValue("productID", productID);
+                cmd.Parameters.AddWithValue("currentstoreID", storeID);
+                cmd.Parameters.AddWithValue("quantity", quantity);
 
-                        var affectedRow = dm.updateData(cmd);
-                        connect.Close();
+                var affectedRow = dm.updateData(cmd);
+                connect.Close();
 
-                        Console.WriteLine("Stock Request Created. {0} row has been inserted", affectedRow);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Exception: {0}", e.Message);
-                    }
-                }
+                Console.WriteLine("Stock Request Created.");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e.Message);
+            }
+            //    }
+            //}
         }
+
+
+
+        public void updateStoreInventory(StockRequest newRequest)
+        {
+            if(newRequest.process == true)
+            {
+                if(StoreItems.Exists(x => x.ProductID == newRequest.prodID))
+                {
+                    updateStockLevel(newRequest);
+                }
+                else
+                {
+                    addNewItem(newRequest);
+                }
+
+            }
+
+        }
+
+
+
 
 
         //after confirming the request, insert new inventory item to the store's inventory
         public void addNewItem(StockRequest newRequest)
         {
-            string query = "INSERT INTO StoreInventory (StoreID, ProductID, StockLevel) Values(@storeID, @productID, @stockLevel);";
+            string query1 = "INSERT INTO StoreInventory (StoreID, ProductID, StockLevel) Values(@storeID, @productID, @stockLevel);";
 
-            //check if the stockrequest has been processed or not && it's a new-item request
-            if(newRequest.process == true && newRequest.requestQuantity == 1)
+            try
             {
+                SqlConnection conn = new SqlConnection(dm.ConnectionString);
+                conn.Open();
 
-                //check if the input id match the one in optionalItem List
+                    SqlCommand cmmd1 = new SqlCommand(query1, conn);
+
+                    //Parametized SQL
+                    cmmd1.CreateParameter();
+                    cmmd1.Parameters.AddWithValue("storeID", newRequest.storeID);
+                    cmmd1.Parameters.AddWithValue("productID", newRequest.prodID);
+                    cmmd1.Parameters.AddWithValue("stockLevel", 1);
+
+                    var affectedRow = dm.updateData(cmmd1);
+
+                    Console.WriteLine("Successfully add new item. {0} row has been inserted", affectedRow);
+                /*
                 foreach (Inventory item in optionalItems)
                 {
+                        //check if the item already in the storeInventory
                     if (newRequest.prodID == item.ProductID)
                     {
-                        try{
-                            //if true, execute the command to insert new row
-                        SqlConnection conn = new SqlConnection(dm.ConnectionString);
-                        conn.Open();
+                            //after add the new item into the store inventory, delete it from the optionalList
+                            optionalItems.Remove(item);
+                     }
+                    
+                }*/
 
-                        SqlCommand cmmd = new SqlCommand(query, conn);
+            //end of outter filter
+                conn.Close();
+            } 
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e.Message);
+            }
 
-                        //Parametized SQL
-                        cmmd.CreateParameter();
-                        cmmd.Parameters.AddWithValue("storeID", newRequest.storeID);
-                        cmmd.Parameters.AddWithValue("productID", newRequest.prodID);
-                        cmmd.Parameters.AddWithValue("stockLevel", newRequest.requestQuantity);
 
-                        var affectedRow = dm.updateData(cmmd);
-                        conn.Close();
+        }
 
-                        Console.WriteLine("Successfully add new item. {0} row has been inserted", affectedRow);
-                        //after add the new item into the store inventory, delete it from the optionalList
 
-                        }
-                        catch(Exception e)
-                        {
-                            Console.WriteLine("Exception: {0}", e.Message);
-                        }
-                       
-                    }
-                    else
-                    {
 
-                        Console.WriteLine("The item is already in the store inventory.");
-                    }
-                }
+        public void updateStockLevel(StockRequest newRequest)
+        {
+            string query2 = "update StoreInventory set StockLevel = @updateStock where StoreID = @storeID AND ProductID = @productID;";
 
+            try{
+
+                SqlConnection conn = new SqlConnection(dm.ConnectionString);
+                conn.Open();
+
+                    SqlCommand cmmd2 = new SqlCommand(query2, conn);
+
+                    cmmd2.CreateParameter();
+                    cmmd2.Parameters.AddWithValue("storeID", newRequest.storeID);
+                    cmmd2.Parameters.AddWithValue("productID", newRequest.prodID);
+                    cmmd2.Parameters.AddWithValue("updateStock", newRequest.requestQuantity);
+
+                    var affectedRow = dm.updateData(cmmd2);
+                    Console.WriteLine("Successfully update. {0} row has been changed", affectedRow);
+
+
+
+            }catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e.Message);
             }
 
         }
 
 
+       
 
 
 
