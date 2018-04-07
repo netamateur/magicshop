@@ -140,7 +140,7 @@ namespace Assignment1
                     case "8":
                     case "9":
                     case "10":
-                        purchaseItem(Int32.Parse(input), storeID);
+                        checkAvailability(Int32.Parse(input), storeID);
                         return;
                     default:
                         Console.WriteLine("Invalid Input");
@@ -149,6 +149,19 @@ namespace Assignment1
             }
         }
        
+        public void checkAvailability(int productID, int storeID)
+        {
+            if (ShopItems.Exists(x => x.ProductID == productID))
+            {
+                purchaseItem(productID, storeID);
+            }
+            else if (!ShopItems.Exists(x => x.ProductID == productID))
+            {
+                Console.WriteLine("No product available");
+                ShopItems.Clear();
+                return;
+            }
+        }
 
         public void purchaseItem(int productID, int storeID)
         {
