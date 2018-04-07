@@ -14,7 +14,7 @@ namespace Assignment1.Models
 
         private static DataManager dm = DataManager.GetDataManager();
         private static List<Inventory> OwnerItems = new List<Inventory>();
-        static List<OwnerRequest> displayedRequest = new List<OwnerRequest>();
+        public static List<OwnerRequest> displayedRequest = new List<OwnerRequest>();
 
 
         //a struct type represents the received request that is displayed to Owner
@@ -85,14 +85,14 @@ namespace Assignment1.Models
 
 
         //Display all owner's received requests(StockRequest obj + currentStock + Availablity)
-        public static List<OwnerRequest> displayOwnerRequest()
+        public static void displayOwnerRequest()
         {
 
             //for each item in OwnerInventory, loop the StockRequest list
             foreach(Inventory item in OwnerItems)
             {
 
-                foreach (StockRequest request in getStockRequestTable())
+                foreach (StockRequest request in StockRequest.requestItems/*getStockRequestTable()*/)
                 {
                     //compare the productID of 2 lists, assign the productName & currentStock 
                     if(item.ProductID == request.prodID)
@@ -102,20 +102,20 @@ namespace Assignment1.Models
                         bool availbility = compareStock(currentStock, request.requestQuantity);
 
                         displayedRequest.Add(new OwnerRequest(request, productName,currentStock, availbility));
-                        /*
+
                         Console.WriteLine("{0} {1} {2} {3} {4} {5}\n",
                                           request.requestID,
                                           request.storeID,
                                           productName,
                                           request.requestQuantity,
                                           currentStock,
-                                          availbility);*/
+                                          availbility);
                     }//end of filter 
 
                 }//end of nested foreach loop
 
             }//end of outter loop
-            return displayedRequest;
+            //return displayedRequest;
 
 
         }
@@ -126,6 +126,7 @@ namespace Assignment1.Models
 
 
         //Fetch all the stock request from db, and add them to the stockRequest list
+        //Notice:getStockRequestTable() must be called before displayOwnerRequest()
         public static List<StockRequest> getStockRequestTable()
         {
             string query = "SELECT * FROM StockRequest;";

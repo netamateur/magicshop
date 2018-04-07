@@ -278,11 +278,12 @@ namespace Assignment1.Models
 
         //fetch table from db by taking storeID
         //list all the items not in the store but in owner's inventory
+        //The SQL has been revised!
 
         public void checkOwnerItem(int storeID)
         {
             
-            string selectQuery = "select * from OwnerInventory EXCEPT select OwnerInventory.ProductID, OwnerInventory.StockLevel from OwnerInventory JOIN StoreInventory ON OwnerInventory.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
+            string selectQuery = "select OwnerInventory.ProductID, Product.Name,OwnerInventory.StockLevel from OwnerInventory LEFT JOIN Product ON OwnerInventory.ProductID = Product.ProductID where OwnerInventory.ProductID NOT IN (select ProductID from StoreInventory where StoreID = @storeID);";
             try{
 
                 SqlConnection conn = new SqlConnection(dm.ConnectionString);

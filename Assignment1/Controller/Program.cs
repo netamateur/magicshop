@@ -34,27 +34,30 @@ namespace Assignment1.Controller
 
 
 
-            //var admin = new FranchiseHolder();
+            var admin = new FranchiseHolder();
 
-            //Console.WriteLine("Please input the store id: ");
+            Console.WriteLine("Please input the store id: ");
 
-            //var storeId = Console.ReadLine();
+            var storeId = Console.ReadLine();
 
-            //Console.WriteLine("Display the optional list");
-            //admin.checkOwnerItem(Int32.Parse(storeId)); //Exception: Column 'Name' does not belong to table .
+            Console.WriteLine("Display the optional list");
+            admin.checkOwnerItem(Int32.Parse(storeId)); //Exception: Column 'Name' does not belong to table .
 
-            //Console.WriteLine("Please input the product you want to increase: ");
+            Console.WriteLine("Please input the product you want to increase: ");
 
-            //var productID = Console.ReadLine();
-            //admin.addStockRequest(Int32.Parse(productID), 1, Int32.Parse(storeId));
+            var productID = Console.ReadLine();
+            admin.addStockRequest(Int32.Parse(productID), 1, Int32.Parse(storeId)); 
 
-            Console.WriteLine("Owner: I would like to see my Inventory.\n");
+            Console.WriteLine("\nOwner: I would like to see my Inventory.\n");
 
             Owner.checkOwnerInventory();
 
-            Console.WriteLine("Owner: I would like to see all the stock request.\n");
+            Console.WriteLine("\nOwner: I would like to see all the stock request.\n");
+
+            Owner.getStockRequestTable();
             Owner.displayOwnerRequest();
-            foreach (Owner.OwnerRequest temp in Owner.displayOwnerRequest())
+            /*
+            foreach (Owner.OwnerRequest temp in Owner.displayedRequest)
             {
                 Console.WriteLine("{0} {1} {2} {3} {4} {5}\n",
                                           temp.request.requestID,
@@ -64,7 +67,7 @@ namespace Assignment1.Controller
                                           temp.currentOwnerStock,
                                           temp.availability);
 
-            }
+            }*/
             //Exception: Column 'StockRequesetID' does not belong to table Table.
             //Owner.getStockRequestTable();
 
