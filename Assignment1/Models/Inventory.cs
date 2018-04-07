@@ -9,7 +9,7 @@ namespace Assignment1
     {
         internal int ProductID { get; }
         internal string ProductName { get; }
-        internal int StockLevel { get; }
+        internal int StockLevel { get; set; }
 
         public Inventory(int pID, string pName, int stockLevel)
         {

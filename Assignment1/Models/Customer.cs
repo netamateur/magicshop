@@ -1,4 +1,5 @@
 ﻿using Assignment1.Controller;
+using Assignment1.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,13 +11,55 @@ namespace Assignment1
 {
     class Customer
     {
-        internal Store store;
         private DataManager dm = DataManager.GetDataManager();
         internal List<Inventory> ShopItems = new List<Inventory>();
+        //internal List<Inventory> PurchaseItem = new List<Inventory>();
 
-        //display 3 items at a item
+        public void getStoreList()
+        {
+            string query = "SELECT * from Store;";
+            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+            conn.Open();
+
+            //parameterized Sql
+            SqlCommand commd = new SqlCommand(query, conn);
+
+            try
+            {
+                var StoreListTable = dm.GetTable(commd);
+
+                Console.WriteLine("Stores \n \n");
+
+                foreach (DataRow row in StoreListTable.Rows)
+                {
+                    var storeID = row["StoreID"].ToString();
+                    var storeName = row["Name"].ToString();
+
+                    //do we need to add stores to a storelist?????
+                    //store = new Store(Int32.Parse(storeID), storeName);
+
+                    Console.WriteLine("{0} {1} \n",
+                    row["StoreID"],
+                    row["Name"]);
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+
         public void DisplayProducts(int storeID)
         {
+            //instantiate the selected store
+            Store current = new Store(storeID);
+
             string query = "SELECT Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
@@ -46,7 +89,7 @@ namespace Assignment1
                     ShopItems.Add(item);
 
                 }
-                printPaginated();
+                printPaginated(storeID);
             }
             catch (Exception e)
             {
@@ -59,7 +102,7 @@ namespace Assignment1
         }
 
 
-        public void printPaginated()
+        public void printPaginated(int storeID)
         {
             var pageOffset = 0;
             var pageSize = 3;
@@ -71,7 +114,7 @@ namespace Assignment1
                 foreach (var x in ShopItems.Skip(pageOffset).Take(pageSize).ToList())
                 {
                     Console.WriteLine("{0,-5}{1,-25}{2,-5}", x.ProductID, x.ProductName, x.StockLevel);
-                }                
+                }
                 Console.Write("\n [Legend: 'N' for Next Page | 'R' Return to Menu ]" +
                     "\n Enter product ID to purchase or function: \n\n");
                 var input = Console.ReadLine();
@@ -86,8 +129,6 @@ namespace Assignment1
                         }
                         break;
                     case "R":
-                        //return to menu();
-                        Console.WriteLine("return to menu");
                         return;
                     case "1":
                     case "2":
@@ -99,9 +140,7 @@ namespace Assignment1
                     case "8":
                     case "9":
                     case "10":
-                        //buy item
-                        purchaseItem(Int32.Parse(input));
-                        Console.WriteLine("buy item");
+                        checkAvailability(Int32.Parse(input), storeID);
                         return;
                     default:
                         Console.WriteLine("Invalid Input");
@@ -109,10 +148,79 @@ namespace Assignment1
                 }
             }
         }
-
-        public void purchaseItem(int input)
+       
+        public void checkAvailability(int productID, int storeID)
         {
-
+            if (ShopItems.Exists(x => x.ProductID == productID))
+            {
+                purchaseItem(productID, storeID);
+            }
+            else if (!ShopItems.Exists(x => x.ProductID == productID))
+            {
+                Console.WriteLine("No product available");
+                ShopItems.Clear();
+                return;
+            }
         }
-    }
+
+        public void purchaseItem(int productID, int storeID)
+        {
+            ////ProductID validation isn't working yet
+
+            //matches the item
+            var filtered = from item in ShopItems
+                           where item.ProductID == productID
+                           select item;
+
+            Console.WriteLine("Enter quantity to purhcase: \n");
+            var purchaseAmount = Int32.Parse(Console.ReadLine());
+
+            foreach (var i in filtered)
+            {
+                if (purchaseAmount >= i.StockLevel)
+                {
+                    Console.WriteLine("Sorry not enough stock");
+                    ShopItems.Clear();
+                    break;
+                }
+                else
+                {
+                    try
+                    {
+                        //can purchase
+                        string query = "update StoreInventory set StockLevel = StockLevel - @purchaseAmount where ProductID = @productID AND StoreID = @storeID;";
+
+                        SqlConnection conn = new SqlConnection(dm.ConnectionString);
+                        conn.Open();
+
+                        SqlCommand commd = new SqlCommand(query, conn);
+
+                        commd.CreateParameter();
+                        commd.Parameters.AddWithValue("productID", productID);
+                        commd.Parameters.AddWithValue("purchaseAmount", purchaseAmount);
+                        commd.Parameters.AddWithValue("storeID", storeID);
+
+                        var affectedRow = dm.updateData(commd);
+
+                        conn.Close();
+
+                        ProductTypes prodName = (ProductTypes)productID;
+                        Console.WriteLine($"Purchased {purchaseAmount} of {prodName}");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exception: {0}", e.Message);
+                    }
+                    finally
+                    {
+                        Console.WriteLine("............ \n");
+                        ShopItems.Clear();
+                    }
+                    
+                }
+
+
+            }
+        }
+   }
 }

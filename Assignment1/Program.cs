@@ -53,12 +53,20 @@ namespace Assignment1
 
             //CUSTOMER Testing
 
-            var test = new Customer();
+            Menu.DisplayMainMenu();
 
-            Console.WriteLine("Enter Store ID to shop at: ");
-            var shopID = Console.ReadLine();
+            //var test = new Customer();
 
-            test.DisplayProducts(Int32.Parse(shopID));
+            //test.getStoreList();
+
+            //Console.WriteLine("Enter Store ID to shop at: ");
+            //var shopID = Console.ReadLine();
+            
+
+
+            //test.DisplayProducts(Int32.Parse(shopID));
+
+            //test.store.StoreID = (Int32.Parse(shopID));
 
 
 
