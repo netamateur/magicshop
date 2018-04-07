@@ -209,8 +209,9 @@ namespace Assignment1.Models
                             //update the store's inventory
                             item.request.process = true;
 
-                            var user = new FranchiseHolder();
-                            user.updateStoreInventory(item.request);
+                            //The this FranchiseHolder contains nothing inside
+                            //var user = new FranchiseHolder();
+                            FranchiseHolder.updateStoreInventory(item.request);
 
                             //remove the processed request
                             //displayedRequest.Remove(item);
@@ -227,7 +228,7 @@ namespace Assignment1.Models
 
             }//end of foreach loop
             //3.delete the stockRequest in db - create a new method?
-            //deleteRequest(requestID);
+            deleteRequest(requestID);
 
         }
 

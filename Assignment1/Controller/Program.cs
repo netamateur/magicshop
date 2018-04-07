@@ -47,7 +47,7 @@ namespace Assignment1.Controller
             Console.WriteLine("Please input the product you want to increase: ");
 
             var productID = Console.ReadLine();
-            admin.addStockRequest(Int32.Parse(productID), 50, Int32.Parse(storeId));  
+            admin.addStockRequest(Int32.Parse(productID), 10, Int32.Parse(storeId));  
 
             Console.WriteLine("\nOwner: I would like to see my Inventory.\n");
 

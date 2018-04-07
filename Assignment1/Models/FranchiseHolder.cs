@@ -11,10 +11,10 @@ namespace Assignment1.Models
     public class FranchiseHolder
     {
         internal Store store { get; set; }
-        private DataManager dm = DataManager.GetDataManager();
+        private static DataManager dm = DataManager.GetDataManager();
 
-        private List<Inventory> StoreItems = new List<Inventory>();
-        private List<Inventory> optionalItems = new List<Inventory>();
+        internal static List<Inventory> StoreItems = new List<Inventory>();
+        internal List<Inventory> optionalItems = new List<Inventory>();
 
         public List<Inventory> thresholdItems = new List<Inventory>();
 
@@ -176,7 +176,7 @@ namespace Assignment1.Models
 
 
 
-        public void updateStoreInventory(StockRequest newRequest)
+        public static void updateStoreInventory(StockRequest newRequest)
         {
             if(newRequest.process == true)
             {
@@ -199,7 +199,7 @@ namespace Assignment1.Models
         //Cannot insert duplicate key in object 'dbo.StoreInventory'. The duplicate key value is (5, 2).
 
         //after confirming the request, insert new inventory item to the store's inventory
-        public void addNewItem(StockRequest newRequest)
+        public static void addNewItem(StockRequest newRequest)
         {
             string query1 = "INSERT INTO StoreInventory (StoreID, ProductID, StockLevel) Values(@storeID, @productID, @stockLevel);";
 
@@ -242,10 +242,24 @@ namespace Assignment1.Models
 
         }
 
+        private static int AddStock(int x, int y) => x + y;
+        //The number of rows have been updated:1
 
-
-        public void updateStockLevel(StockRequest newRequest)
+        public static void updateStockLevel(StockRequest newRequest)
         {
+            var currentStock = 0 ;
+            //get the current stock ammount from StoreInventory
+            foreach(Inventory item in StoreItems)
+            {
+                if(item.ProductID == newRequest.prodID)
+                {
+                    currentStock = item.StockLevel;
+                }
+                
+            }
+
+            var updateAmount = AddStock(newRequest.requestQuantity,currentStock);
+
             string query2 = "update StoreInventory set StockLevel = @updateStock where StoreID = @storeID AND ProductID = @productID;";
 
             try{
@@ -258,7 +272,7 @@ namespace Assignment1.Models
                     cmmd2.CreateParameter();
                     cmmd2.Parameters.AddWithValue("storeID", newRequest.storeID);
                     cmmd2.Parameters.AddWithValue("productID", newRequest.prodID);
-                    cmmd2.Parameters.AddWithValue("updateStock", newRequest.requestQuantity);
+                    cmmd2.Parameters.AddWithValue("updateStock", updateAmount);
 
                     var affectedRow = dm.updateData(cmmd2);
                     Console.WriteLine("Successfully update. {0} row has been changed", affectedRow);
