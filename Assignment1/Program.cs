@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using Assignment1.Contorller;
 using Assignment1.Models;
-
 
 
 namespace Assignment1
 {
     class Program
     {
-        
 
         static void Main(string[] args)
         {
@@ -33,7 +30,7 @@ namespace Assignment1
 
 
             //Owner.checkOwnerInventory();
-
+            /*STOCKREQUEST
             var admin = new FranchiseHolder();
 
             Console.WriteLine("Enter threshold for re-stocking: ");
@@ -44,8 +41,29 @@ namespace Assignment1
             admin.getStockThreshold(Int32.Parse(threshold), 1);
 
 
+
+
             Console.WriteLine("Enter request to process: ");
-            var productRequest = Console.ReadLine();
+            //check user input to threshold table productID
+            //check user input to productID exists in that store
+            var requestPID = Console.ReadLine();
+
+            admin.addStockRequest(Int32.Parse(requestPID), Int32.Parse(threshold), 1);
+            */
+
+            //CUSTOMER Testing
+
+            var test = new Customer();
+
+            Console.WriteLine("Enter Store ID to shop at: ");
+            var shopID = Console.ReadLine();
+
+            test.DisplayProducts(Int32.Parse(shopID));
+
+
+
+
+
 
 
 

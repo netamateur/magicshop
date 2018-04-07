@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using Assignment1.Contorller;
+using Assignment1.Controller;
 
 
 namespace Assignment1.Models
@@ -13,9 +13,11 @@ namespace Assignment1.Models
         public Store store { get; set; }
         private DataManager dm = DataManager.GetDataManager();
         public List<Inventory> StoreItems = new List<Inventory>();
+        public List<Inventory> OptionalItems = new List<Inventory>();
+
         public enum storeList{MelbourneCBD=1,EastMelbourne=2,NorthMelbourne=3,SouthMelbourne=4,WestMelbourne=5 }
 
-        public List<Inventory> requestItems = new List<Inventory>();
+        public List<Inventory> thresholdItems = new List<Inventory>();
 
         //Franchise Holder should take store obj as parameters to construct
         public FranchiseHolder()
@@ -28,10 +30,12 @@ namespace Assignment1.Models
         //check store inventory
         public void checkStoreInventory(int storeID)
         {
-            string query = "select Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
+            string query = "SELECT Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
+            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+            conn.Open();
 
             //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, new SqlConnection(dm.ConnectionString));
+            SqlCommand commd = new SqlCommand(query, conn);
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@storeID";
             param.SqlDbType = SqlDbType.Int;
@@ -40,7 +44,8 @@ namespace Assignment1.Models
 
             commd.Parameters.Add(param);
 
-            try{
+            try
+            {
                 var FranchiseHolderTable = dm.GetTable(commd);
 
                 foreach (DataRow row in FranchiseHolderTable.Rows)
@@ -59,26 +64,28 @@ namespace Assignment1.Models
 
                 }
 
-
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
             }
+            finally
+            {
+                conn.Close();
+            }
 
         }
 
 
-        //make stock request to owner
+        //View Stock Request Threshold
         public void getStockThreshold(int threshold, int currentStoreId)
         {
-            string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel > @threshold;";
+            string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel < @threshold;";
+            SqlConnection conn = new SqlConnection(dm.ConnectionString);
+            conn.Open();
 
             //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, new SqlConnection(dm.ConnectionString));
-
-            //commd.Parameters.Add("@currentStoreId", SqlDbType.Int);
-            //commd.Parameters.Add("@threshold", SqlDbType.Int);
+            SqlCommand commd = new SqlCommand(query, conn);
 
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@threshold";
@@ -91,7 +98,6 @@ namespace Assignment1.Models
             param2.SqlDbType = SqlDbType.Int;
             param2.Direction = ParameterDirection.Input;
             param2.Value = currentStoreId;
-
 
             commd.Parameters.Add(param);
             commd.Parameters.Add(param2);
@@ -108,7 +114,7 @@ namespace Assignment1.Models
 
                     Inventory item = new Inventory(Int32.Parse(pID), pName, Int32.Parse(pStock));
 
-                    requestItems.Add(item);
+                    thresholdItems.Add(item);
 
                     Console.WriteLine("{0} {1} {2}\n",
                                   row["ProductID"],
@@ -119,9 +125,49 @@ namespace Assignment1.Models
             {
                 Console.WriteLine("Exception: {0}", e.Message);
             }
+            finally
+            {
+                conn.Close();
+            }
 
         }
 
+        //Add Stock Request to Owner - Threshold--- remove storeID
+        public void addStockRequest(int productID, int quantity, int storeID)
+        {
+            //add to stockrequest table
+            string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @quantity);";
+
+            //foreach (Inventory item in StoreItems)
+            //{
+            //    check if inserted id is same as productID in that store
+            //    if (productID == item.ProductID)
+            //    {
+                    try
+                    {
+                        SqlConnection connect = new SqlConnection(dm.ConnectionString);
+                        connect.Open();
+
+                        SqlCommand cmd = new SqlCommand(query, connect);
+
+                        //Parametized SQL
+                        cmd.CreateParameter();
+                        cmd.Parameters.AddWithValue("productID", productID);
+                        cmd.Parameters.AddWithValue("currentstoreID", storeID);
+                        cmd.Parameters.AddWithValue("quantity", quantity);
+
+                        var affectedRow = dm.updateData(cmd);
+                        connect.Close();
+
+                        Console.WriteLine("Stock Request Created.");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exception: {0}", e.Message);
+                    }
+            //    }
+            //}
+        }
 
 
         //add new inventory item

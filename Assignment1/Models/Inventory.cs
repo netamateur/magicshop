@@ -7,14 +7,14 @@ namespace Assignment1
     /*The Inventory class actually indicates the OwnerInventory*/
     public class Inventory
     {
-        private int ProductID { get; }
-        public string productName { get; }
-        private int StockLevel { get; }
+        internal int ProductID { get; }
+        internal string ProductName { get; }
+        internal int StockLevel { get; }
 
-        public Inventory(int productID, string pName, int stockLevel)
+        public Inventory(int pID, string pName, int stockLevel)
         {
-            ProductID = productID;
-            productName = pName;
+            ProductID = pID;
+            ProductName = pName;
             StockLevel = stockLevel;
         }
     }
