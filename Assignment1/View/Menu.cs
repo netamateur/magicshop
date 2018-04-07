@@ -146,13 +146,13 @@ namespace Assignment1
             }
         }
 
-        //public static void DisplayFranchiseMenu()
-        //{
-        //    //to do:
-        //    //store ID and name
-        //    //input id and then taken that franchise storemenu
+        public static void DisplayFranchiseMenu()
+        {
+            //to do:
+            //store ID and name
+            //input id and then taken that franchise storemenu
 
-        //}
+        }
 
     }
 }
