@@ -13,14 +13,13 @@ namespace Assignment1
     {
         private DataManager dm = DataManager.GetDataManager();
         internal List<Inventory> ShopItems = new List<Inventory>();
-        //internal List<Inventory> PurchaseItem = new List<Inventory>();
 
         public void getStoreList()
         {
             string query = "SELECT * from Store;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
-
+  
             //parameterized Sql
             SqlCommand commd = new SqlCommand(query, conn);
 
@@ -41,7 +40,6 @@ namespace Assignment1
                     Console.WriteLine("{0} {1} \n",
                     row["StoreID"],
                     row["Name"]);
-
                 }
             }
             catch (Exception e)
@@ -87,7 +85,6 @@ namespace Assignment1
                     Inventory item = new Inventory(Int32.Parse(pID), pName, Int32.Parse(pStock));
 
                     ShopItems.Add(item);
-
                 }
                 printPaginated(storeID);
             }
@@ -157,7 +154,7 @@ namespace Assignment1
             }
             else if (!ShopItems.Exists(x => x.ProductID == productID))
             {
-                Console.WriteLine("No product available");
+                Console.WriteLine("No product available\n\n");
                 ShopItems.Clear();
                 return;
             }
@@ -165,8 +162,6 @@ namespace Assignment1
 
         public void purchaseItem(int productID, int storeID)
         {
-            ////ProductID validation isn't working yet
-
             //matches the item
             var filtered = from item in ShopItems
                            where item.ProductID == productID
@@ -179,7 +174,7 @@ namespace Assignment1
             {
                 if (purchaseAmount >= i.StockLevel)
                 {
-                    Console.WriteLine("Sorry not enough stock");
+                    Console.WriteLine("Sorry not enough stock\n\n");
                     ShopItems.Clear();
                     break;
                 }
@@ -216,10 +211,7 @@ namespace Assignment1
                         Console.WriteLine("............ \n");
                         ShopItems.Clear();
                     }
-                    
                 }
-
-
             }
         }
    }
