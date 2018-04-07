@@ -213,7 +213,7 @@ namespace Assignment1.Models
                             user.updateStoreInventory(item.request);
 
                             //remove the processed request
-                            displayedRequest.Remove(item);
+                            //displayedRequest.Remove(item);
 
                         }
                         catch (Exception e)
@@ -227,7 +227,7 @@ namespace Assignment1.Models
 
             }//end of foreach loop
             //3.delete the stockRequest in db - create a new method?
-            deleteRequest(requestID);
+            //deleteRequest(requestID);
 
         }
 

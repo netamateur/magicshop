@@ -184,7 +184,7 @@ namespace Assignment1.Models
                 {
                     updateStockLevel(newRequest);
                 }
-                else
+                else if(!StoreItems.Exists(x => x.ProductID == newRequest.prodID))
                 {
                     addNewItem(newRequest);
                 }
@@ -194,8 +194,9 @@ namespace Assignment1.Models
         }
 
 
-
-
+        /* !!!! */
+        //Exception: Violation of PRIMARY KEY constraint 'PK_StoreInventory'. 
+        //Cannot insert duplicate key in object 'dbo.StoreInventory'. The duplicate key value is (5, 2).
 
         //after confirming the request, insert new inventory item to the store's inventory
         public void addNewItem(StockRequest newRequest)

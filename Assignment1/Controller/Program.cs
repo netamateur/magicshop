@@ -40,13 +40,14 @@ namespace Assignment1.Controller
 
             var storeId = Console.ReadLine();
 
-            Console.WriteLine("Display the optional list");
-            admin.checkOwnerItem(Int32.Parse(storeId)); //Exception: Column 'Name' does not belong to table .
+            Console.WriteLine("Display the storeInventory list");
+            //admin.checkOwnerItem(Int32.Parse(storeId)); //Exception: Column 'Name' does not belong to table .
+            admin.checkStoreInventory(Int32.Parse(storeId));
 
             Console.WriteLine("Please input the product you want to increase: ");
 
             var productID = Console.ReadLine();
-            admin.addStockRequest(Int32.Parse(productID), 1, Int32.Parse(storeId)); 
+            admin.addStockRequest(Int32.Parse(productID), 50, Int32.Parse(storeId));  
 
             Console.WriteLine("\nOwner: I would like to see my Inventory.\n");
 
@@ -56,6 +57,13 @@ namespace Assignment1.Controller
 
             Owner.getStockRequestTable();
             Owner.displayOwnerRequest();
+
+            Console.WriteLine("Please input the reqeust id you want to process: ");
+
+            var rId = Console.ReadLine();
+            Owner.processRequest(Int32.Parse(rId));
+            Owner.deleteRequest(Int32.Parse(rId));
+
             /*
             foreach (Owner.OwnerRequest temp in Owner.displayedRequest)
             {
