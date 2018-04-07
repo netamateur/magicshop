@@ -30,7 +30,7 @@ namespace Assignment1
 
 
             //Owner.checkOwnerInventory();
-
+            /*STOCKREQUEST
             var admin = new FranchiseHolder();
 
             Console.WriteLine("Enter threshold for re-stocking: ");
@@ -49,6 +49,20 @@ namespace Assignment1
             var requestPID = Console.ReadLine();
 
             admin.addStockRequest(Int32.Parse(requestPID), Int32.Parse(threshold), 1);
+            */
+
+            //CUSTOMER Testing
+
+            var test = new Customer();
+
+            Console.WriteLine("Enter Store ID to shop at: ");
+            var shopID = Console.ReadLine();
+
+            test.DisplayProducts(Int32.Parse(shopID));
+
+
+
+
 
 
 
