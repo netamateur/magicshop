@@ -13,7 +13,7 @@ namespace Assignment1
     {
         private DataManager dm = DataManager.GetDataManager();
         internal List<Inventory> ShopItems = new List<Inventory>();
-        internal List<Inventory> PurchaseItem = new List<Inventory>();
+        //internal List<Inventory> PurchaseItem = new List<Inventory>();
 
         public void getStoreList()
         {
@@ -140,7 +140,6 @@ namespace Assignment1
                     case "8":
                     case "9":
                     case "10":
-                        //buy item
                         purchaseItem(Int32.Parse(input), storeID);
                         return;
                     default:
@@ -149,60 +148,66 @@ namespace Assignment1
                 }
             }
         }
+       
 
         public void purchaseItem(int productID, int storeID)
         {
+            ////ProductID validation isn't working yet
+
+            //matches the item
+            var filtered = from item in ShopItems
+                           where item.ProductID == productID
+                           select item;
+
             Console.WriteLine("Enter quantity to purhcase: \n");
-            var input = Console.ReadLine();
-            var purchaseAmount = Int32.Parse(input);
+            var purchaseAmount = Int32.Parse(Console.ReadLine());
 
-            //NEEDS TO CHECK PURCHSE AMT VS STOCK LEVEL
-            
-            //can purchase
-            string query = "update StoreInventory set StockLevel = StockLevel - @purchaseAmount where ProductID = @productID AND StoreID = @storeID;";
-
-            try
+            foreach (var i in filtered)
             {
-                var buy = from item in ShopItems
-                          where item.ProductID == productID && purchaseAmount <= item.StockLevel
-                          select item;
+                if (purchaseAmount >= i.StockLevel)
+                {
+                    Console.WriteLine("Sorry not enough stock");
+                    ShopItems.Clear();
+                    break;
+                }
+                else
+                {
+                    try
+                    {
+                        //can purchase
+                        string query = "update StoreInventory set StockLevel = StockLevel - @purchaseAmount where ProductID = @productID AND StoreID = @storeID;";
 
-                    SqlConnection conn = new SqlConnection(dm.ConnectionString);
-                    conn.Open();
+                        SqlConnection conn = new SqlConnection(dm.ConnectionString);
+                        conn.Open();
 
-                    SqlCommand commd = new SqlCommand(query, conn);
+                        SqlCommand commd = new SqlCommand(query, conn);
 
-                    commd.CreateParameter();
-                    commd.Parameters.AddWithValue("productID", productID);
-                    commd.Parameters.AddWithValue("purchaseAmount", purchaseAmount);
-                    commd.Parameters.AddWithValue("storeID", storeID);
+                        commd.CreateParameter();
+                        commd.Parameters.AddWithValue("productID", productID);
+                        commd.Parameters.AddWithValue("purchaseAmount", purchaseAmount);
+                        commd.Parameters.AddWithValue("storeID", storeID);
 
-                    var affectedRow = dm.updateData(commd);
+                        var affectedRow = dm.updateData(commd);
 
-                    conn.Close();
+                        conn.Close();
 
-                ProductTypes prodName = (ProductTypes)productID;
+                        ProductTypes prodName = (ProductTypes)productID;
+                        Console.WriteLine($"Purchased {purchaseAmount} of {prodName}");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exception: {0}", e.Message);
+                    }
+                    finally
+                    {
+                        Console.WriteLine("............ \n");
+                        ShopItems.Clear();
+                    }
+                    
+                }
 
-                Console.WriteLine($"Purchased {purchaseAmount} of {prodName}");
 
             }
-            catch (Exception e)
-            {
-                    Console.WriteLine("Exception: {0}", e.Message);
-            }
-
-            //catch (Exception)
-            //{
-            //    Console.WriteLine("Product not available.");
-            //}
-            finally
-            {
-                Console.WriteLine("............ \n");
-
-                ShopItems.Clear();
-            }
-            
-
         }
-    }
+   }
 }

@@ -126,7 +126,7 @@ namespace Assignment1
             {
                 Console.WriteLine($"Welcome to Marvelous Magic (Retail - {storeLocation})");
                 Console.WriteLine("==========================");
-                Console.WriteLine("1. Display All Stock Requests");
+                Console.WriteLine("1. Display Products");
                 Console.WriteLine("2. Return to Main Menu \n");
                 Console.WriteLine("Enter an option:\n");
 
