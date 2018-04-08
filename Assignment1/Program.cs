@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
-using Assignment1.Models;
-
 
 namespace Assignment1
 {

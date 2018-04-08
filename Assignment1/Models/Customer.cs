@@ -160,7 +160,7 @@ namespace Assignment1
                         commd.Parameters.AddWithValue("purchaseAmount", purchaseAmount);
                         commd.Parameters.AddWithValue("storeID", storeID);
 
-                        var affectedRow = dm.updateData(commd);
+                        var affectedRow = dm.UpdateData(commd);
 
                         conn.Close();
 

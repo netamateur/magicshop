@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using Assignment1.Controller;
@@ -175,7 +174,7 @@ namespace Assignment1.Models
                 cmd.Parameters.AddWithValue("currentstoreID", storeID);
                 cmd.Parameters.AddWithValue("quantity", quantity);
 
-                var affectedRow = dm.updateData(cmd);
+                var affectedRow = dm.UpdateData(cmd);
                 connect.Close();
 
                 Console.WriteLine("Stock Request Created.");
@@ -220,7 +219,7 @@ namespace Assignment1.Models
                 cmmd1.Parameters.AddWithValue("productID", newRequest.prodID);
                 cmmd1.Parameters.AddWithValue("stockLevel", 1);
 
-                var affectedRow = dm.updateData(cmmd1);
+                var affectedRow = dm.UpdateData(cmmd1);
 
                 Console.WriteLine("\nSuccessfully add new item. {0} row has been inserted", affectedRow);
 
@@ -321,7 +320,7 @@ namespace Assignment1.Models
                 cmmd2.Parameters.AddWithValue("productID", newRequest.prodID);
                 cmmd2.Parameters.AddWithValue("updateStock", updateAmount);
 
-                var affectedRow = dm.updateData(cmmd2);
+                var affectedRow = dm.UpdateData(cmmd2);
                 Console.WriteLine("\nSuccessfully update. {0} row has been changed", affectedRow);
             }
             catch (Exception e)

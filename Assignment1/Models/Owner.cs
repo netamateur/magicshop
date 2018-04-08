@@ -46,7 +46,7 @@ namespace Assignment1.Models
 
             try
             {
-                var ownerTable = dm.fetchData(query, dm.ConnectionString);
+                var ownerTable = dm.FetchData(query, dm.ConnectionString);
 
                 if (i != 1)
                 {
@@ -85,7 +85,7 @@ namespace Assignment1.Models
 
             try
             {
-                var requestTable = dm.fetchData(query, dm.ConnectionString);
+                var requestTable = dm.FetchData(query, dm.ConnectionString);
 
                 foreach (DataRow row in requestTable.Rows)
                 {
@@ -148,16 +148,12 @@ namespace Assignment1.Models
             ProcessRequest(Int32.Parse(input));
         }
 
-        
-
-
-        //a Lambda expression used to get the Availability of request
+        //Helper Lambda expression used to get the Availability of request
         private static bool CompareStock(int x, int y) => x >= y;
-        
+
+        //Helper Lambda expression used to remove stock
         private static int ReduceStock(int x, int y) => x - y;
 
-        //process request and then delete request after processing
-        //check availablity
 
         //OPTION 1 - Step 4: Process Stock Request
         //1.check if the availability of request is True
@@ -184,7 +180,7 @@ namespace Assignment1.Models
                             commd.Parameters.AddWithValue("productID", item.request.prodID);
                             commd.Parameters.AddWithValue("updateStock", updateStockLevel);
 
-                            var affectedRow = dm.updateData(commd);
+                            var affectedRow = dm.UpdateData(commd);
 
                             conn.Close();
 
@@ -222,7 +218,7 @@ namespace Assignment1.Models
                 command.CommandText = query;
                 command.Parameters.AddWithValue("requestID", requestID);
 
-                var affectedRow = dm.updateData(command);
+                var affectedRow = dm.UpdateData(command);
                 conn.Close();
 
             }
@@ -257,7 +253,7 @@ namespace Assignment1.Models
                             commd.CreateParameter();
                             commd.Parameters.AddWithValue("productID", productID);
 
-                            var affectedRow = dm.updateData(commd);
+                            var affectedRow = dm.UpdateData(commd);
                             conn.Close();
 
                             Console.WriteLine("\nThe number of rows have been updated:" + affectedRow);

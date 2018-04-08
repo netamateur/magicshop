@@ -1,37 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Assignment1.Models;
-
 
 namespace Assignment1.Controller
 {
-
-
     public class DataManager
     {
-
-
         public string ConnectionString = "server=wdt2018.australiaeast.cloudapp.azure.com;uid=s3419529;database=s3419529;pwd=abc123;";
 
         //Constructor
-        private DataManager()
-        {
-            //SqlConnection conn = new SqlConnection(ConnectionString);
-            //conn.Open();
+        private DataManager() {}
 
-        }
-
-
-
-        /* R -- retrive */
-        //fetch table by query and connectionString
-        public DataTable fetchData(string query, string connString)
+        //Fetch table by query and connectionString
+        public DataTable FetchData(string query, string connString)
         {
             try
             {
-
                 SqlConnection conn = new SqlConnection(connString);
                 SqlCommand comd = new SqlCommand(query, conn);
                 conn.Open();
@@ -65,11 +49,9 @@ namespace Assignment1.Controller
 
             return table;
         }
-
-
-
-        /* U - update */
-        public int updateData(string query, string connString)
+        
+        //Update table by query and connectionString
+        public int UpdateData(string query, string connString)
         {
             int update = 0;
             try
@@ -81,18 +63,16 @@ namespace Assignment1.Controller
                 conn.Close();
 
                 return update;
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Exception: {0}", ex.Message);
                 return -1;
             }
-
         }
 
-
-        public int updateData(SqlCommand command)
+        //Update table by command
+        public int UpdateData(SqlCommand command)
         {
             int update = 0;
             try
@@ -113,10 +93,8 @@ namespace Assignment1.Controller
         //Singleton pattern signature method
         public static DataManager GetDataManager()
         {
-
             DataManager dm = new DataManager();
             return dm;
-
         }
 
     }
