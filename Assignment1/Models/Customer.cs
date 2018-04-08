@@ -14,44 +14,7 @@ namespace Assignment1
         private DataManager dm = DataManager.GetDataManager();
         internal List<Inventory> ShopItems = new List<Inventory>();
 
-        public void getStoreList()
-        {
-            string query = "SELECT * from Store;";
-            SqlConnection conn = new SqlConnection(dm.ConnectionString);
-            conn.Open();
-  
-            //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, conn);
-
-            try
-            {
-                var StoreListTable = dm.GetTable(commd);
-
-                Console.WriteLine("Stores \n \n");
-
-                foreach (DataRow row in StoreListTable.Rows)
-                {
-                    var storeID = row["StoreID"].ToString();
-                    var storeName = row["Name"].ToString();
-
-                    //do we need to add stores to a storelist?????
-                    //store = new Store(Int32.Parse(storeID), storeName);
-
-                    Console.WriteLine("{0} {1} \n",
-                    row["StoreID"],
-                    row["Name"]);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: {0}", e.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-
+        public Customer() { }
 
         public void DisplayProducts(int storeID)
         {
@@ -154,7 +117,7 @@ namespace Assignment1
             }
             else if (!ShopItems.Exists(x => x.ProductID == productID))
             {
-                Console.WriteLine("No product available\n\n");
+                Console.WriteLine("\nSorry, the selected product is not available at this store.\n\n");
                 ShopItems.Clear();
                 return;
             }
@@ -174,7 +137,7 @@ namespace Assignment1
             {
                 if (purchaseAmount >= i.StockLevel)
                 {
-                    Console.WriteLine("Sorry not enough stock\n\n");
+                    Console.WriteLine("\nSorry, we do not have enough stock.\n\n");
                     ShopItems.Clear();
                     break;
                 }

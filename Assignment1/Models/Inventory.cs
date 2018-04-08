@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assignment1
+namespace Assignment1.Models
 {
     /*The Inventory class actually indicates the OwnerInventory*/
     public class Inventory
     {
         internal int ProductID { get; }
         internal string ProductName { get; }
-        internal int StockLevel { get; set; }
+        internal int StockLevel { get; }
 
-        public Inventory(int pID, string pName, int stockLevel)
+        public Inventory(int productID, string pName, int stockLevel)
         {
-            ProductID = pID;
+            ProductID = productID;
             ProductName = pName;
             StockLevel = stockLevel;
         }

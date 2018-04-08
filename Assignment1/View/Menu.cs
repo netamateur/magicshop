@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assignment1.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,6 +9,7 @@ namespace Assignment1
 {
     public static class Menu
     {
+        //Main Menu
         public static void DisplayMainMenu()
         {
             while (true)
@@ -27,7 +29,7 @@ namespace Assignment1
                         //DisplayOwnerMenu();
                         break;
                     case "2":
-                        //DisplayFranchiseMenu();
+                        DisplayFranchiseMenu();
                         break;
                     case "3":
                         DisplayCustomerMenu();
@@ -43,6 +45,7 @@ namespace Assignment1
 
         }
 
+        //Owner Menu
         //public static void DisplayOwnerMenu()
         //{
         //    while (true)
@@ -102,7 +105,7 @@ namespace Assignment1
         //}
 
 
-
+        //Customer Menu
         public static void DisplayCustomerMenu()
         {
             //1 display store list
@@ -110,13 +113,13 @@ namespace Assignment1
             //3 disply menu of that store
 
             var c = new Customer();
+            var s = new Store();
 
             //1 -2
-            c.getStoreList();
+            s.getStoreList();
             
             Console.WriteLine("Enter Store ID to shop at: ");
             var storeID = Int32.Parse(Console.ReadLine());
-
 
             Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;
 
@@ -146,11 +149,56 @@ namespace Assignment1
             }
         }
 
+        //Franchisee Menu
         public static void DisplayFranchiseMenu()
         {
             //to do:
             //store ID and name
             //input id and then taken that franchise storemenu
+
+            var f = new FranchiseHolder();
+            var s = new Store();
+
+            s.getStoreList();
+
+            Console.WriteLine("Enter your store to use: ");
+            var storeID = Int32.Parse(Console.ReadLine());
+
+            Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;
+
+            while (true)
+            {
+                Console.WriteLine($"\nWelcome to Marvelous Magic (Retail - {storeLocation})");
+                Console.WriteLine("==========================");
+                Console.WriteLine("1. Display Inventory");
+                Console.WriteLine("2. Stock Request (Threshold)");
+                Console.WriteLine("3. Add New Inventory Item");
+                Console.WriteLine("4. Return to Main Menu\n");
+                Console.WriteLine("Enter an option:\n");
+
+                var input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        f.checkStoreInventory(storeID);
+                        break;
+                    case "2":
+                        Console.WriteLine("\nEnter threshold for re-stocking: ");
+                        var v = Int32.Parse(Console.ReadLine());
+                        f.getStockThreshold(v, storeID);
+                        break;
+                    case "3":
+                        f.checkOwnerItem(storeID);
+                        break;
+                    case "4":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid Choice \n");
+                        break;
+                }
+            }
+
 
         }
 
