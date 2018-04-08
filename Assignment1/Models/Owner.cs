@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using Assignment1.Controller;
+using static Assignment1.Store;
 
 namespace Assignment1.Models
 {
     public class Owner
     {
         //Tier1 System user
-
-
         private static DataManager dm = DataManager.GetDataManager();
-        private static List<Inventory> OwnerItems = new List<Inventory>();
-        public static List<OwnerRequest> displayedRequest = new List<OwnerRequest>();
 
+        private static List<Inventory> OwnerItems = new List<Inventory>();
+        public static List<OwnerRequest> DisplayedRequest = new List<OwnerRequest>();
+
+        public Owner() { }
 
         //a struct type represents the received request that is displayed to Owner
         public struct OwnerRequest
@@ -32,26 +32,26 @@ namespace Assignment1.Models
                 currentOwnerStock = currentStk;
                 availability = stockAvail;
             }
-
-
         }
 
-
-
-
-
-        //Display owner's inventory
-        public static void checkOwnerInventory()
+        //OPTION 1 - Step 1: Retrieve Owner Inventory, table not printed
+        //OPTION 2: Display owner's inventory, table printed
+        //OPTION 3 - Step 1:
+        //Retrieve from DB of Owner Inventory
+        public void GetOwnerInventory(int i)
         {
+            const string format = "{0,-5}{1,-25}{2}";
 
-            string query =
-            "select product.ProductID, product.Name, OwnerInventory.StockLevel from product JOIN OwnerInventory ON Product.ProductID = OwnerInventory.ProductID;";
+            string query = "select product.ProductID, product.Name, OwnerInventory.StockLevel from product JOIN OwnerInventory ON Product.ProductID = OwnerInventory.ProductID;";
 
             try
             {
-
                 var ownerTable = dm.fetchData(query, dm.ConnectionString);
 
+                if (i != 1)
+                {
+                    Console.WriteLine(format, "ID", "Product", "Current Stock");
+                }
                 foreach (DataRow row in ownerTable.Rows)
                 {
                     var pID = row["ProductID"].ToString();
@@ -62,15 +62,14 @@ namespace Assignment1.Models
 
                     OwnerItems.Add(item);
 
-                    Console.WriteLine("{0} {1} {2}\n",
+                    if (i != 1)
+                    {
+                        Console.WriteLine(format,
                                   row["ProductID"],
                                   row["Name"], row["StockLevel"]);
-
+                    }
                 }
-
-
             }
-
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
@@ -78,56 +77,9 @@ namespace Assignment1.Models
 
         }
 
-
-        //a Lambda expression used to get the Availability of request
-        private static bool compareStock(int x, int y) => x >= y;
-
-
-
-        //Display all owner's received requests(StockRequest obj + currentStock + Availablity)
-        public static void displayOwnerRequest()
-        {
-
-            //for each item in OwnerInventory, loop the StockRequest list
-            foreach (Inventory item in OwnerItems)
-            {
-
-                foreach (StockRequest request in StockRequest.requestItems/*getStockRequestTable()*/)
-                {
-                    //compare the productID of 2 lists, assign the productName & currentStock 
-                    if (item.ProductID == request.prodID)
-                    {
-                        var currentStock = item.StockLevel;
-                        var productName = item.ProductName;
-                        bool availbility = compareStock(currentStock, request.requestQuantity);
-
-                        displayedRequest.Add(new OwnerRequest(request, productName, currentStock, availbility));
-
-                        Console.WriteLine("{0} {1} {2} {3} {4} {5}\n",
-                                          request.requestID,
-                                          request.storeID,
-                                          productName,
-                                          request.requestQuantity,
-                                          currentStock,
-                                          availbility);
-                    }//end of filter 
-
-                }//end of nested foreach loop
-
-            }//end of outter loop
-            //return displayedRequest;
-
-
-        }
-
-
-
-
-
-
+        //OPTION 1 - Step 2: Retrieve Stock Request Table
         //Fetch all the stock request from db, and add them to the stockRequest list
-        //Notice:getStockRequestTable() must be called before displayOwnerRequest()
-        public static List<StockRequest> getStockRequestTable()
+        public List<StockRequest> GetStockRequestTable()
         {
             string query = "SELECT * FROM StockRequest;";
 
@@ -145,49 +97,82 @@ namespace Assignment1.Models
                     StockRequest item = new StockRequest(Int32.Parse(rID), Int32.Parse(sID), Int32.Parse(pID), Int32.Parse(pQuantity));
 
                     StockRequest.requestItems.Add(item);
-
-                    /*
-                    Console.WriteLine("{0} {1} {2} {3}\n",
-                                  row["StockRequestID"],
-                                  row["StoreID"],
-                                  row["ProductID"],
-                                  row["Quantity"]);*/
                 }
-
-                return StockRequest.requestItems;
-
-
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
-                return null;
             }
-
-
-
+            finally
+            {
+                DisplayOwnerRequest();
+            }
+                return StockRequest.requestItems;
         }
 
+        //OPTION 1 - Step 3: Display all owner's received requests(StockRequest obj + currentStock + Availablity)
+        public void DisplayOwnerRequest()
+        {
+            Console.WriteLine("{0,-3} {1,-15} {2,-25} {3,-10} {4,-10} {5,10}\n",
+                                          "ID", "Store", "Product", "Quantity", "Current Stock", "Availability");
+
+            //for each item in OwnerInventory, loop the StockRequest list
+            foreach (Inventory item in OwnerItems)
+            {
+                foreach (StockRequest request in StockRequest.requestItems/*getStockRequestTable()*/)
+                {
+                    //compare the productID of 2 lists, assign the productName & currentStock 
+                    if (item.ProductID == request.prodID)
+                    {
+                        var currentStock = item.StockLevel;
+                        var productName = item.ProductName;
+                        bool availbility = CompareStock(currentStock, request.requestQuantity);
+
+                        DisplayedRequest.Add(new OwnerRequest(request, productName, currentStock, availbility));
+
+                        StoreFranchise storeList = (StoreFranchise)request.storeID;
+
+                        Console.WriteLine("{0,-3} {1,-15} {2,-25} {3,-10} {4,-10} {5,10}\n",
+                                          request.requestID,
+                                          storeList,
+                                          productName,
+                                          request.requestQuantity,
+                                          currentStock,
+                                          availbility);
+                    }
+                }
+            }
+
+            Console.WriteLine("Enter request to process");
+            var input = Console.ReadLine();
+            ProcessRequest(Int32.Parse(input));
+        }
+
+        
 
 
-        private static int reduceStock(int x, int y) => x - y;
+        //a Lambda expression used to get the Availability of request
+        private static bool CompareStock(int x, int y) => x >= y;
+        
+        private static int ReduceStock(int x, int y) => x - y;
 
         //process request and then delete request after processing
         //check availablity
-        public static void processRequest(int requestID)
+
+        //OPTION 1 - Step 4: Process Stock Request
+        //1.check if the availability of request is True
+        //2.deal with the request-> update owner's inventory & update store's inventory in db -> set the request.process = true 
+        public static void ProcessRequest(int requestID)
         {
             string query = "update OwnerInventory set StockLevel = @updateStock where ProductID = @productID;";
 
-            foreach (OwnerRequest item in displayedRequest)
+            foreach (OwnerRequest item in DisplayedRequest)
             {
                 if (item.request.requestID == requestID)
                 {
-                    //1.check if the availability of request is True
                     if (item.availability == true)
                     {
-                        //2.deal with the request-> update owner's inventory & 
-                        //update store's inventory in db -> set the request.process = true 
-                        var updateStockLevel = reduceStock(item.currentOwnerStock, item.request.requestQuantity);
+                        var updateStockLevel = ReduceStock(item.currentOwnerStock, item.request.requestQuantity);
 
                         try
                         {
@@ -195,7 +180,6 @@ namespace Assignment1.Models
                             conn.Open();
 
                             SqlCommand commd = new SqlCommand(query, conn);
-
                             commd.CreateParameter();
                             commd.Parameters.AddWithValue("productID", item.request.prodID);
                             commd.Parameters.AddWithValue("updateStock", updateStockLevel);
@@ -204,34 +188,26 @@ namespace Assignment1.Models
 
                             conn.Close();
 
-                            Console.WriteLine("The number of rows have been updated:" + affectedRow);
+                            Console.WriteLine("\nThe number of rows have been updated: " + affectedRow);
 
-                            //update the store's inventory
                             item.request.process = true;
 
-                            //The this FranchiseHolder contains nothing inside
-                            //var user = new FranchiseHolder();
-                            FranchiseHolder.updateStoreInventory(item.request);
-
-                            //remove the processed request
-                            //displayedRequest.Remove(item);
-
+                            FranchiseHolder.UpdateStoreInventory(item.request);
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine("Exception: {0}", e.Message);
                         }
-
+                        finally
+                        {
+                            deleteRequest(requestID);
+                        }
                     }
-
                 }
-
-            }//end of foreach loop
-            //3.delete the stockRequest in db - create a new method?
-            deleteRequest(requestID);
-
+            }
         }
 
+        //OPTION 1 - Step 5: After stock request has been processed, the row will be removed from the table
         //delete the stockRequest in db
         public static void deleteRequest(int requestID)
         {
@@ -254,23 +230,22 @@ namespace Assignment1.Models
             {
                 Console.WriteLine("Exception: {0}", e.Message);
             }
-
+            finally
+            {
+                OwnerItems.Clear();
+            }
         }
 
-        //reset item stock to 20 by taking productID
-        public static void resetTo20(int productID)
+        //OPTION 3: Reset Inventory Item Stock
+        //reset item stock to 20 given productID
+        public void ResetTo20(int productID)
         {
             string query = "update OwnerInventory set StockLevel = 20 where ProductID = @productID;";
 
-
-            //match the input id by looping the list
             foreach (Inventory item in OwnerItems)
             {
-
-                //check if the product ID is same
                 if (productID == item.ProductID)
                 {
-                    //if true, check if stock level less than 20
                     if (item.StockLevel < 20)
                     {
                         try
@@ -279,43 +254,27 @@ namespace Assignment1.Models
                             conn.Open();
 
                             SqlCommand commd = new SqlCommand(query, conn);
-
-                            //Parameterized SQL
                             commd.CreateParameter();
                             commd.Parameters.AddWithValue("productID", productID);
 
-                            //update the stocklevel
                             var affectedRow = dm.updateData(commd);
                             conn.Close();
 
-                            Console.WriteLine("The number of rows have been updated:" + affectedRow);
-                            Console.WriteLine("{0} stock level has been reset to 20.", item.ProductName);
-
+                            Console.WriteLine("\nThe number of rows have been updated:" + affectedRow);
+                            Console.WriteLine("\n{0} stock level has been reset to 20.", item.ProductName);
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine("Exception: {0}", e.Message);
                         }
-
                     }
                     else
                     {
-                        Console.WriteLine("The stock level of selected product is already 20 or above.");
-
-                    }//end of nested filter
-
-
-                }//end of filter
-
-
-            }//end of foreach loop
-
+                        Console.WriteLine("\nThe stock level of selected product is already 20 or above.\n");
+                        OwnerItems.Clear();
+                    }
+                }
+            }
         }
-
-
-
-
-
-
     }
 }

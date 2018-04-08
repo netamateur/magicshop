@@ -7,7 +7,7 @@ namespace Assignment1
 {
     public class Store
     {
-        private DataManager dm = DataManager.GetDataManager();
+        private static DataManager dm = DataManager.GetDataManager();
 
         internal int StoreID { get; }
         internal string Name { get; }

@@ -22,7 +22,7 @@ namespace Assignment1
                 switch (input)
                 {
                     case "1":
-                        //DisplayOwnerMenu();
+                        DisplayOwnerMenu();
                         break;
                     case "2":
                         DisplayFranchiseMenu();
@@ -42,64 +42,55 @@ namespace Assignment1
         }
 
         //1. Owner Menu
-        //public static void DisplayOwnerMenu()
-        //{
-        //    while (true)
-        //    {
+        public static void DisplayOwnerMenu()
+        {
+            var o = new Owner();
+            
 
-        //        Console.WriteLine("Welcome to Marvelous Magic (Owner)");
-        //        Console.WriteLine("==========================");
-        //        Console.WriteLine("1. Display ALl Stock Requests");
-        //        Console.WriteLine("2. Display Owner Inventory");
-        //        Console.WriteLine("3. Reset Inventory Item Stock");
-        //        Console.WriteLine("4. Return to Main Menu");
-        //        Console.WriteLine("Enter an option:");
+            while (true)
+            {
+                Console.WriteLine("Welcome to Marvelous Magic (Owner)");
+                Console.WriteLine("=================================");
+                Console.WriteLine("1. Display All Stock Requests");
+                Console.WriteLine("2. Display Owner Inventory");
+                Console.WriteLine("3. Reset Inventory Item Stock");
+                Console.WriteLine("4. Return to Main Menu");
+                Console.WriteLine("Enter an option:");
 
-        //        var input = Console.ReadLine();
+                var input = Console.ReadLine();
 
-        //        check if the input valid 
-        //        if (!int.TryParse(input, out var option) || option < 1 || option > 3)
-        //        {
-        //            Console.WriteLine("Invalid input.");
-        //            Console.WriteLine();
-        //            continue;
-        //        }
+                //check if the input valid
+                //if (!int.TryParse(input, out var option) || option < 1 || option > 3)
+                //{
+                //    Console.WriteLine("Invalid input.");
+                //    Console.WriteLine();
+                //    continue;
+                //}
 
-        //        switch (input)
-        //        {
-        //            case "1":
-        //                DisplayAllStock();
-        //                break;
-        //            case "2":
-        //                DisplayOwnerInventory();
-        //                break;
-        //            case "3":
-        //                ResetInventoryItemStock();
-        //                break;
-        //            case "4":
-        //                return;
-        //            default:
-        //                Console.WriteLine("Invalid Choice");
-        //                break;
-        //        }
-        //    }
-        //}
-
-        //private static void ResetInventoryItemStock()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private static void DisplayOwnerInventory()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private static void DisplayAllStock()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
+                switch (input)
+                {
+                    case "1":
+                        o.GetOwnerInventory(Int32.Parse(input));
+                        o.GetStockRequestTable();
+                        break;
+                    case "2":
+                        o.GetOwnerInventory(Int32.Parse(input));
+                        break;
+                    case "3":
+                        Console.WriteLine("\nReset Stock \nProduct stock will be reset to 20.");
+                        o.GetOwnerInventory(Int32.Parse(input));
+                        Console.WriteLine("\nEnter product ID to reset.");
+                        var reset = Int32.Parse(Console.ReadLine());
+                        o.ResetTo20(reset);
+                        break;
+                    case "4":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid Choice");
+                        break;
+                }
+            }
+        }
 
         //2. Franchisee Menu
         //Retrieves Store List for user to locate, takes in user input
@@ -108,6 +99,7 @@ namespace Assignment1
         {
             var f = new FranchiseHolder();
             var s = new Store();
+            const int newItemStock = 1;
 
             s.GetStoreList();
 
@@ -131,16 +123,20 @@ namespace Assignment1
                 switch (input)
                 {
                     case "1":
-                        f.checkStoreInventory(storeID);
+                        f.CheckStoreInventory(storeID);
                         break;
                     case "2":
                         //OPTION 2 - STEP 1: View Stock Request Threshold - requires user input for threshold amount
                         Console.WriteLine("\nEnter threshold for re-stocking: ");
                         var v = Int32.Parse(Console.ReadLine());
-                        f.getStockThreshold(v, storeID);
+                        f.GetStockThreshold(v, storeID);
                         break;
                     case "3":
-                        f.checkOwnerItem(storeID);
+                        f.CheckOwnerItem(storeID);
+                        Console.WriteLine("\nEnter product to add: ");
+                        var id2 = Int32.Parse(Console.ReadLine());
+                        f.AddStockRequest(id2, newItemStock, storeID);
+
                         break;
                     case "4":
                         return;
