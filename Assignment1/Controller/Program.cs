@@ -6,15 +6,15 @@ using System.Data;
 using Assignment1.Models;
 
 
-
+/*
 namespace Assignment1.Controller
 {
     class Program
     {
         
 
-        static void Main(string[] args)
-        {
+       public static void Main(string[] args)
+       {
             /*
             var dm = DataManager.GetDataManager();
 
@@ -33,7 +33,7 @@ namespace Assignment1.Controller
 
 
 
-
+            /*
             var admin = new FranchiseHolder();
 
             Console.WriteLine("Please input the store id: ");
@@ -62,7 +62,8 @@ namespace Assignment1.Controller
 
             var rId = Console.ReadLine();
             Owner.processRequest(Int32.Parse(rId));
-            Owner.deleteRequest(Int32.Parse(rId));
+            Owner.deleteRequest(Int32.Parse(rId));  */
+
 
             /*
             foreach (Owner.OwnerRequest temp in Owner.displayedRequest)
@@ -95,12 +96,13 @@ namespace Assignment1.Controller
                                   row["ProductID"],
                                   row["Quantity"]);
             } */
-
             /*
+
+            FranchiseHolder admin = new FranchiseHolder();
             Console.WriteLine("Please input the store id: ");
 
             var id2 = Console.ReadLine();
-            Console.WriteLine("2- East Melbourne");
+            Console.WriteLine("\n1- CBD Melbourne");
 
             admin.checkStoreInventory(Int32.Parse(id2)); */
 
@@ -110,7 +112,7 @@ namespace Assignment1.Controller
             Console.WriteLine("Please enter the productID:"); */
            /*
             var productID = Console.ReadLine();
-            Owner.resetTo20(Int32.Parse(productID)); */
+            Owner.resetTo20(Int32.Parse(productID)); 
 
 
 
@@ -123,3 +125,4 @@ namespace Assignment1.Controller
 
     }
 
+*/

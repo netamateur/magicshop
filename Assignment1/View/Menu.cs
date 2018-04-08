@@ -107,6 +107,7 @@ namespace Assignment1
         {
             var f = new FranchiseHolder();
             var s = new Store();
+            const int newItemStock = 1;
 
             s.GetStoreList();
 
@@ -130,16 +131,30 @@ namespace Assignment1
                 switch (input)
                 {
                     case "1":
+                        Console.WriteLine("{0,-5}{1,-25}{2,-5}", "ID", "Product", "Current Stock");
                         f.checkStoreInventory(storeID);
                         break;
                     case "2":
                         //OPTION 2 - STEP 1: View Stock Request Threshold - requires user input for threshold amount
                         Console.WriteLine("\nEnter threshold for re-stocking: ");
-                        var v = Int32.Parse(Console.ReadLine());
-                        f.getStockThreshold(v, storeID);
+                        var threshold = Int32.Parse(Console.ReadLine());
+
+                        Console.WriteLine("{0,-5}{1,-25}{2,-5}", "ID", "Product", "Current Stock");
+                        f.getStockThreshold(threshold, storeID);
+                        Console.WriteLine("\nEnter productID to create request: ");
+                        var id = Int32.Parse(Console.ReadLine());
+                        f.addStockRequest(id,threshold,storeID);
+                         
                         break;
                     case "3":
+                        Console.WriteLine("{0,-5}{1,-25}{2,-5}", "ID", "Product", "Current Stock");
                         f.checkOwnerItem(storeID);
+
+                        Console.WriteLine("\nEnter product to add: ");
+                        var id2 = Int32.Parse(Console.ReadLine());
+                        f.addStockRequest(id2, newItemStock, storeID);
+
+
                         break;
                     case "4":
                         return;

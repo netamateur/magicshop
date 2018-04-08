@@ -45,8 +45,8 @@ namespace Assignment1.Models
         //Display owner's inventory
         public static void checkOwnerInventory()
         {
-            
-          string query = 
+            const string format = "{0,-5}{1,-25}{2}";
+           string query = 
           "select product.ProductID, product.Name, OwnerInventory.StockLevel from product JOIN OwnerInventory ON Product.ProductID = OwnerInventory.ProductID;";
 
             try
@@ -64,7 +64,7 @@ namespace Assignment1.Models
 
                     OwnerItems.Add(item);
 
-                    Console.WriteLine("{0} {1} {2}\n",
+                    Console.WriteLine(format,
                                   row["ProductID"],
                                   row["Name"], row["StockLevel"]);
 
@@ -208,7 +208,7 @@ namespace Assignment1.Models
 
                             conn.Close();
 
-                            Console.WriteLine("The number of rows have been updated:" + affectedRow);
+                            Console.WriteLine("\nThe number of rows have been updated:" + affectedRow);
 
                             //update the store's inventory
                             item.request.process = true;
@@ -293,8 +293,8 @@ namespace Assignment1.Models
                             var affectedRow = dm.updateData(commd);
                             conn.Close();
 
-                            Console.WriteLine("The number of rows have been updated:" + affectedRow);
-                            Console.WriteLine("{0} stock level has been reset to 20.", item.ProductName);
+                            Console.WriteLine("\nThe number of rows have been updated:" + affectedRow);
+                            Console.WriteLine("\n{0} stock level has been reset to 20.", item.ProductName);
 
                         }
                         catch (Exception e)
@@ -304,7 +304,7 @@ namespace Assignment1.Models
 
                     }else
                     {
-                        Console.WriteLine("The stock level of selected product is already 20 or above.");
+                        Console.WriteLine("\nThe stock level of selected product is already 20 or above.");
 
                     }//end of nested filter
                    

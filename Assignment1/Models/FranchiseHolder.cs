@@ -36,7 +36,7 @@ namespace Assignment1.Models
         public void checkStoreInventory(int storeID)
         {
             string query = "SELECT Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
-
+            const string format = "{0,-5}{1,-25}{2}";
 
             try
             {
@@ -65,7 +65,7 @@ namespace Assignment1.Models
 
                     StoreItems.Add(item);
 
-                    Console.WriteLine("{0} {1} {2}\n",
+                    Console.WriteLine(format,
                                   row["ProductID"],
                                   row["Name"], row["StockLevel"]);
 
@@ -89,30 +89,31 @@ namespace Assignment1.Models
         {
             /* double check the query: the "Stocklevel > threshold" is not correct? */
             string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel < @threshold;";
-            SqlConnection conn = new SqlConnection(dm.ConnectionString);
-            conn.Open();
-
-            //parameterized Sql
-            SqlCommand commd = new SqlCommand(query, conn);
-
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@threshold";
-            param.SqlDbType = SqlDbType.Int;
-            param.Direction = ParameterDirection.Input;
-            param.Value = threshold;
-
-            SqlParameter param2 = new SqlParameter();
-            param2.ParameterName = "@currentStoreId";
-            param2.SqlDbType = SqlDbType.Int;
-            param2.Direction = ParameterDirection.Input;
-            param2.Value = currentStoreId;
-
-
-            commd.Parameters.Add(param);
-            commd.Parameters.Add(param2);
+            const string format = "{0,-5}{1,-25}{2}";
 
             try
             {
+                SqlConnection conn = new SqlConnection(dm.ConnectionString);
+                conn.Open();
+
+                //parameterized Sql
+                SqlCommand commd = new SqlCommand(query, conn);
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@threshold";
+                param.SqlDbType = SqlDbType.Int;
+                param.Direction = ParameterDirection.Input;
+                param.Value = threshold;
+
+                SqlParameter param2 = new SqlParameter();
+                param2.ParameterName = "@currentStoreId";
+                param2.SqlDbType = SqlDbType.Int;
+                param2.Direction = ParameterDirection.Input;
+                param2.Value = currentStoreId;
+
+
+                commd.Parameters.Add(param);
+                commd.Parameters.Add(param2);
 
                 var ThresholdTable = dm.GetTable(commd);
 
@@ -127,18 +128,17 @@ namespace Assignment1.Models
 
                     thresholdItems.Add(item);
 
-                    Console.WriteLine("{0} {1} {2}\n",
+                    Console.WriteLine(format,
                                   row["ProductID"],
                                   row["Name"], row["StockLevel"]);
                 }
+
+                conn.Close();
             }
+
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.Message);
-            }
-            finally
-            {
-                conn.Close();
             }
 
         }
@@ -221,7 +221,7 @@ namespace Assignment1.Models
 
                     var affectedRow = dm.updateData(cmmd1);
 
-                    Console.WriteLine("Successfully add new item. {0} row has been inserted", affectedRow);
+                    Console.WriteLine("\nSuccessfully add new item. {0} row has been inserted", affectedRow);
                 /*
                 foreach (Inventory item in optionalItems)
                 {
@@ -281,7 +281,7 @@ namespace Assignment1.Models
 
 
                     var affectedRow = dm.updateData(cmmd2);
-                    Console.WriteLine("Successfully update. {0} row has been changed", affectedRow);
+                    Console.WriteLine("\nSuccessfully update. {0} row has been changed", affectedRow);
 
 
 
@@ -303,7 +303,8 @@ namespace Assignment1.Models
 
         public void checkOwnerItem(int storeID)
         {
-            
+            const string format = "{0,-5}{1,-25}{2}";
+
             string selectQuery = "select OwnerInventory.ProductID, Product.Name,OwnerInventory.StockLevel from OwnerInventory LEFT JOIN Product ON OwnerInventory.ProductID = Product.ProductID where OwnerInventory.ProductID NOT IN (select ProductID from StoreInventory where StoreID = @storeID);";
             try{
 
@@ -326,9 +327,15 @@ namespace Assignment1.Models
 
                     optionalItems.Add(item);
 
-                    Console.WriteLine("{0} {1} {2}\n",
+                    if(optionalItems.Count >= 1 )
+                    {
+                        Console.WriteLine(format,
                                   row["ProductID"],
                                   row["Name"], row["StockLevel"]);
+                    }else
+                    {
+                        Console.WriteLine("No new products available.");
+                    }
 
                 }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using Assignment1.Controller;
 
 namespace Assignment1.Models
 {
@@ -12,6 +13,8 @@ namespace Assignment1.Models
         internal int StoreID { get; set; }
 
         internal string Name { get; set; }
+
+        private static DataManager dm = DataManager.GetDataManager();
 
         public Store(int sID) => StoreID = sID;
         public Store() { }
