@@ -8,13 +8,13 @@ namespace Assignment1.Models
     public class Inventory
     {
         internal int ProductID { get; }
-        internal string productName { get; }
+        internal string ProductName { get; }
         internal int StockLevel { get; }
 
         public Inventory(int productID, string pName, int stockLevel)
         {
             ProductID = productID;
-            productName = pName;
+            ProductName = pName;
             StockLevel = stockLevel;
         }
     }

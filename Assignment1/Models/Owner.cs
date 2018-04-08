@@ -98,7 +98,7 @@ namespace Assignment1.Models
                     if(item.ProductID == request.prodID)
                     {
                         var currentStock = item.StockLevel;
-                        var productName = item.productName;
+                        var productName = item.ProductName;
                         bool availbility = compareStock(currentStock, request.requestQuantity);
 
                         displayedRequest.Add(new OwnerRequest(request, productName,currentStock, availbility));
@@ -289,7 +289,7 @@ namespace Assignment1.Models
                             conn.Close();
 
                             Console.WriteLine("The number of rows have been updated:" + affectedRow);
-                            Console.WriteLine("{0} stock level has been reset to 20.", item.productName);
+                            Console.WriteLine("{0} stock level has been reset to 20.", item.ProductName);
 
                         }
                         catch (Exception e)
