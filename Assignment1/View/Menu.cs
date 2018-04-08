@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
+using Assignment1.Models;
 
 namespace Assignment1
 {
@@ -27,7 +26,7 @@ namespace Assignment1
                         //DisplayOwnerMenu();
                         break;
                     case "2":
-                        //DisplayFranchiseMenu();
+                        DisplayFranchiseMenu();
                         break;
                     case "3":
                         DisplayCustomerMenu();
@@ -101,29 +100,71 @@ namespace Assignment1
         //    throw new NotImplementedException();
         //}
 
+        //2. Franchisee Menu
+        //Retrieves Store List for user to locate, takes in user input
+        //3 Franchise Holder Options: Display Inventory, Stock Request (Threshold), Add New Inventory Item
+        public static void DisplayFranchiseMenu()
+        {
+            var f = new FranchiseHolder();
+            var s = new Store();
 
+            s.GetStoreList();
 
+            Console.WriteLine("Enter your store to use: ");
+            var storeID = Int32.Parse(Console.ReadLine());
+
+            Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;
+
+            while (true)
+            {
+                Console.WriteLine($"\nWelcome to Marvelous Magic (Retail - {storeLocation})");
+                Console.WriteLine("==========================");
+                Console.WriteLine("1. Display Inventory");
+                Console.WriteLine("2. Stock Request (Threshold)");
+                Console.WriteLine("3. Add New Inventory Item");
+                Console.WriteLine("4. Return to Main Menu\n");
+                Console.WriteLine("Enter an option:\n");
+
+                var input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        f.checkStoreInventory(storeID);
+                        break;
+                    case "2":
+                        //OPTION 2 - STEP 1: View Stock Request Threshold - requires user input for threshold amount
+                        Console.WriteLine("\nEnter threshold for re-stocking: ");
+                        var v = Int32.Parse(Console.ReadLine());
+                        f.getStockThreshold(v, storeID);
+                        break;
+                    case "3":
+                        f.checkOwnerItem(storeID);
+                        break;
+                    case "4":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid Choice \n");
+                        break;
+                }
+            }
+        }
+
+        //3. Customer Menu
+        //Retrieves Store List for user to locate, takes in user input
+        //1 Customer Option: Display Products to Purchase
         public static void DisplayCustomerMenu()
         {
-            //1 display store list
-            //2 pick store
-            //3 disply menu of that store
-
             var c = new Customer();
+            var s = new Store();
 
-            //1 -2
-            c.getStoreList();
-
+            s.GetStoreList();
 
             Console.WriteLine("Enter Store ID to shop at: ");
             var storeID = Int32.Parse(Console.ReadLine());
 
-
-
             Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;
 
-            //3
-            //input id and then taken to that store menu
             while (true)
             {
                 Console.WriteLine($"Welcome to Marvelous Magic (Retail - {storeLocation})");
@@ -146,14 +187,6 @@ namespace Assignment1
                         break;
                 }
             }
-        }
-
-        public static void DisplayFranchiseMenu()
-        {
-            //to do:
-            //store ID and name
-            //input id and then taken that franchise storemenu
-
         }
 
     }
