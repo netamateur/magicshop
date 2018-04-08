@@ -11,23 +11,21 @@ namespace Assignment1.Models
 {
     public class FranchiseHolder
     {
-        internal Store Store { get; set; }
-
         private static DataManager dm = DataManager.GetDataManager();
+
+        //Available items in the store
         internal static List<Inventory> StoreItems = new List<Inventory>();
+
+        //Additional new items that store could add to their inventory
         internal List<Inventory> optionalItems = new List<Inventory>();
+
+        //Items that are under user input threshold
         internal List<Inventory> thresholdItems = new List<Inventory>();
 
-
-        //Franchise Holder should take store obj as parameters to construct
-        public FranchiseHolder()
-        {
-            //store.StoreID = storeID;
-
-        }
-
+        public FranchiseHolder() {}
 
         //OPTION 1: Check store inventory
+        //Retrieve from DB of that store's inventory
         public void checkStoreInventory(int storeID)
         {
             string query = "select Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
@@ -37,7 +35,6 @@ namespace Assignment1.Models
                 SqlConnection conn = new SqlConnection(dm.ConnectionString);
                 conn.Open();
 
-                //parameterized Sql
                 SqlCommand commd = new SqlCommand(query, conn);
                 SqlParameter param = new SqlParameter();
                 param.ParameterName = "@storeID";
@@ -64,7 +61,6 @@ namespace Assignment1.Models
                     Console.WriteLine("{0,-5} {1,-25} {2,-5}\n",
                                   row["ProductID"],
                                   row["Name"], row["StockLevel"]);
-
                 }
                     conn.Close();
             }
@@ -75,14 +71,15 @@ namespace Assignment1.Models
         }
 
 
-        //OPTION 2: View Stock Request Threshold - STEP 1
+        //OPTION 2 - STEP 2: View Stock Request Threshold
+        //Retrieve from DB on the items with user input threshold
+        //Then shows user whether there are items under that threshold, if not - returns to menu, otherwise process user input for item to send stock request
         public void getStockThreshold(int threshold, int storeID)
         {
             string query = "select Product.ProductID, Product.Name, StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @currentStoreId AND StockLevel <= @threshold;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
-
-            //parameterized Sql
+           
             SqlCommand commd = new SqlCommand(query, conn);
 
             SqlParameter param = new SqlParameter();
@@ -128,7 +125,6 @@ namespace Assignment1.Models
             {
                 conn.Close();
 
-                // shows user whether there are items under that threshold
                 if (!thresholdItems.Any())
                 {
                     Console.WriteLine("No items under that threshold.");
@@ -143,7 +139,7 @@ namespace Assignment1.Models
 
         }
 
-        //Check user input for the correct Product ID
+        //OPTION 2 - Step 3: Check user input for the correct Product ID
         public void checkAvailability(int productID, int threshold, int storeID)
         {
             if (StoreItems.Exists(x => x.ProductID == productID))
@@ -158,11 +154,11 @@ namespace Assignment1.Models
             }
         }
 
-        //OPTION 2: FranchiseHolder sends stock request for a product - STEP 2
-        //Sends Stock Request to Owner - Threshold --- update by Rita
+        //OPTION 2 - Step 4: FranchiseHolder sends stock request for a product
+        //OPTION 3 - Step :
+        //Adds new row to StockRequest table for owner to view and process later
         public void addStockRequest(int productID, int quantity, int storeID)
         {
-            //add to stockrequest table
             string query = "INSERT INTO StockRequest (StoreID, ProductID, Quantity) Values(@currentStoreID, @productID, @quantity);";
 
             try
@@ -171,8 +167,6 @@ namespace Assignment1.Models
                 connect.Open();
 
                 SqlCommand cmd = new SqlCommand(query, connect);
-
-                //Parametized SQL
                 cmd.CreateParameter();
                 cmd.Parameters.AddWithValue("productID", productID);
                 cmd.Parameters.AddWithValue("currentstoreID", storeID);
@@ -206,7 +200,7 @@ namespace Assignment1.Models
             }
         }
 
-        //OPTION 3: Add New Inventory Item - Step
+        //OPTION 3 - Step: Add New Inventory Item
         /* !!!! */
         //Exception: Violation of PRIMARY KEY constraint 'PK_StoreInventory'. 
         //Cannot insert duplicate key in object 'dbo.StoreInventory'. The duplicate key value is (5, 2).
@@ -307,7 +301,8 @@ namespace Assignment1.Models
         //list all the items not in the store but in owner's inventory
         //The SQL has been revised!
 
-        //OPTION 3 - Add New Inventory - Step 1 - Compares FranchiseHolder inventory to Owner Inventory
+        //OPTION 3 - Step 1: Add New Inventory
+        //Compares FranchiseHolder Inventory to Owner Inventory
         public void checkOwnerItem(int storeID)
         {
             string selectQuery = "select OwnerInventory.ProductID, Product.Name,OwnerInventory.StockLevel from OwnerInventory LEFT JOIN Product ON OwnerInventory.ProductID = Product.ProductID where OwnerInventory.ProductID NOT IN (select ProductID from StoreInventory where StoreID = @storeID);";

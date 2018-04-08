@@ -5,27 +5,26 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 
 namespace Assignment1
 {
     class Customer
     {
         private DataManager dm = DataManager.GetDataManager();
+
+        //Inventory Items avalable for the customer to purchase
         internal List<Inventory> ShopItems = new List<Inventory>();
 
         public Customer() { }
 
+        //OPTION 1 - Step 1: Display products for customer to buy at a store
+        //Retrieve from DB and added to ShopItems objects to a Inventory List - only when the list of items are displayed, the customer can make a purchase
         public void DisplayProducts(int storeID)
         {
-            //instantiate the selected store
-            Store current = new Store(storeID);
-
             string query = "SELECT Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
 
-            //parameterized Sql
             SqlCommand commd = new SqlCommand(query, conn);
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@storeID";
@@ -61,7 +60,9 @@ namespace Assignment1
             }
         }
 
-
+        //OPTION 1 - Step 2: Display 3 Products per Page
+        //Code Reference example from Matthew Bolger, Week 5
+        //Takes in user input for viewing more products, return to menu or make a purchase
         public void printPaginated(int storeID)
         {
             var pageOffset = 0;
@@ -109,6 +110,7 @@ namespace Assignment1
             }
         }
        
+        //OPTION 1 - Step 3: Checks whether the product is available at that store
         public void checkAvailability(int productID, int storeID)
         {
             if (ShopItems.Exists(x => x.ProductID == productID))
@@ -123,9 +125,10 @@ namespace Assignment1
             }
         }
 
+        //OPTION 1 - Step 4: After validating selection, item can be purchase
+        //First it selects the item, requires user for a purchase amount, checks available stock level at that store, and updates the the DB once product(s) is purchased.
         public void purchaseItem(int productID, int storeID)
         {
-            //matches the item
             var filtered = from item in ShopItems
                            where item.ProductID == productID
                            select item;
@@ -142,10 +145,9 @@ namespace Assignment1
                     break;
                 }
                 else
-                {
+                { 
                     try
                     {
-                        //can purchase
                         string query = "update StoreInventory set StockLevel = StockLevel - @purchaseAmount where ProductID = @productID AND StoreID = @storeID;";
 
                         SqlConnection conn = new SqlConnection(dm.ConnectionString);
@@ -171,7 +173,7 @@ namespace Assignment1
                     }
                     finally
                     {
-                        Console.WriteLine("............ \n");
+                        Console.WriteLine("\n.............Thank you for shopping with us. \n\n");
                         ShopItems.Clear();
                     }
                 }

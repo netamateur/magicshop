@@ -10,12 +10,16 @@ namespace Assignment1
 {
     public class Store
     {
-        internal int StoreID { get; set; }
-        internal string Name { get; set; }
+        private DataManager dm = DataManager.GetDataManager();
 
+        internal int StoreID { get; }
+        internal string Name { get; }
+
+        //Constructors
         public Store(int sID) => StoreID = sID;
         public Store() { }
 
+        //Enum StoreFranchise List
         public enum StoreFranchise
         {
             MelbourneCBD = 1,
@@ -26,22 +30,20 @@ namespace Assignment1
 
         }
 
-        private DataManager dm = DataManager.GetDataManager();
-
-        public void getStoreList()
+        //Displays Store List for Users: FranchiseHolder and Customer
+        public void GetStoreList()
         {
             string query = "SELECT * from Store;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
-
-            //parameterized Sql
+            
             SqlCommand commd = new SqlCommand(query, conn);
 
             try
             {
                 var StoreListTable = dm.GetTable(commd);
 
-                Console.WriteLine("Stores \n \n");
+                Console.WriteLine("\n\n Stores \n");
 
                 foreach (DataRow row in StoreListTable.Rows)
                 {
@@ -62,8 +64,5 @@ namespace Assignment1
                 conn.Close();
             }
         }
-
-
-
     }
 }

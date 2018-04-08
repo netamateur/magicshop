@@ -45,7 +45,7 @@ namespace Assignment1
 
         }
 
-        //Owner Menu
+        //1. Owner Menu
         //public static void DisplayOwnerMenu()
         //{
         //    while (true)
@@ -105,61 +105,15 @@ namespace Assignment1
         //}
 
 
-        //Customer Menu
-        public static void DisplayCustomerMenu()
-        {
-            //1 display store list
-            //2 pick store
-            //3 disply menu of that store
-
-            var c = new Customer();
-            var s = new Store();
-
-            //1 -2
-            s.getStoreList();
-            
-            Console.WriteLine("Enter Store ID to shop at: ");
-            var storeID = Int32.Parse(Console.ReadLine());
-
-            Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;
-
-            //3
-            //input id and then taken to that store menu
-            while (true)
-            {
-                Console.WriteLine($"Welcome to Marvelous Magic (Retail - {storeLocation})");
-                Console.WriteLine("==========================");
-                Console.WriteLine("1. Display Products");
-                Console.WriteLine("2. Return to Main Menu \n");
-                Console.WriteLine("Enter an option:\n");
-
-                var input = Console.ReadLine();
-
-                switch (input)
-                {
-                    case "1":
-                        c.DisplayProducts(storeID);
-                        break;
-                    case "2":
-                        return;
-                    default:
-                        Console.WriteLine("Invalid Choice \n");
-                        break;
-                }
-            }
-        }
-
-        //Franchisee Menu
+        //2. Franchisee Menu
+        //Retrieves Store List for user to locate, takes in user input
+        //3 Franchise Holder Options: Display Inventory, Stock Request (Threshold), Add New Inventory Item
         public static void DisplayFranchiseMenu()
         {
-            //to do:
-            //store ID and name
-            //input id and then taken that franchise storemenu
-
             var f = new FranchiseHolder();
             var s = new Store();
 
-            s.getStoreList();
+            s.GetStoreList();
 
             Console.WriteLine("Enter your store to use: ");
             var storeID = Int32.Parse(Console.ReadLine());
@@ -184,6 +138,7 @@ namespace Assignment1
                         f.checkStoreInventory(storeID);
                         break;
                     case "2":
+                        //OPTION 2 - STEP 1: View Stock Request Threshold - requires user input for threshold amount
                         Console.WriteLine("\nEnter threshold for re-stocking: ");
                         var v = Int32.Parse(Console.ReadLine());
                         f.getStockThreshold(v, storeID);
@@ -198,8 +153,45 @@ namespace Assignment1
                         break;
                 }
             }
+        }
 
+        //3. Customer Menu
+        //Retrieves Store List for user to locate, takes in user input
+        //1 Customer Option: Display Products to Purchase
+        public static void DisplayCustomerMenu()
+        {
+            var c = new Customer();
+            var s = new Store();
 
+            s.GetStoreList();
+
+            Console.WriteLine("Enter Store ID to shop at: ");
+            var storeID = Int32.Parse(Console.ReadLine());
+
+            Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;
+
+            while (true)
+            {
+                Console.WriteLine($"Welcome to Marvelous Magic (Retail - {storeLocation})");
+                Console.WriteLine("==========================");
+                Console.WriteLine("1. Display Products");
+                Console.WriteLine("2. Return to Main Menu \n");
+                Console.WriteLine("Enter an option:\n");
+
+                var input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        c.DisplayProducts(storeID);
+                        break;
+                    case "2":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid Choice \n");
+                        break;
+                }
+            }
         }
 
     }
