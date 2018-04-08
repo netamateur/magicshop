@@ -19,7 +19,7 @@ namespace Assignment1
             string query = "SELECT * from Store;";
             SqlConnection conn = new SqlConnection(dm.ConnectionString);
             conn.Open();
-  
+
             //parameterized Sql
             SqlCommand commd = new SqlCommand(query, conn);
 
@@ -145,7 +145,7 @@ namespace Assignment1
                 }
             }
         }
-       
+
         public void checkAvailability(int productID, int storeID)
         {
             if (ShopItems.Exists(x => x.ProductID == productID))
@@ -214,5 +214,7 @@ namespace Assignment1
                 }
             }
         }
+
    }
 }
+

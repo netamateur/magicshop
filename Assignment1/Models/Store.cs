@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assignment1
+namespace Assignment1.Models
 {
     public class Store
     {
@@ -23,6 +23,19 @@ namespace Assignment1
 
         }
 
+
+
+        public Store(int sID) => StoreID = sID;
+
+        public enum StoreFranchise
+        {
+            MelbourneCBD = 1,
+            NorthMelbourne = 2,
+            EastMelbourne = 3,
+            SouthMelbourne = 4,
+            Westmelbourne = 5
+
+        }
 
 
     }
