@@ -1,10 +1,7 @@
 ﻿using Assignment1.Controller;
-using Assignment1.Models;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace Assignment1
 {
