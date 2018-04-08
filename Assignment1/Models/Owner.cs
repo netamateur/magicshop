@@ -91,45 +91,36 @@ namespace Assignment1.Models
         public static void displayOwnerRequest()
 
         {
-            string query = "SELECT * FROM StockRequest;";
-
-            try
-            {
-                var requestTable = dm.fetchData(query, dm.ConnectionString);
-
-            //for each item in OwnerInventory, loop the StockRequest list
-            foreach(Inventory item in OwnerItems)
-            {
-
-                foreach (StockRequest request in StockRequest.requestItems/*getStockRequestTable()*/)
+                //for each item in OwnerInventory, loop the StockRequest list
+                foreach (Inventory item in OwnerItems)
                 {
-                    //compare the productID of 2 lists, assign the productName & currentStock 
-                    if(item.ProductID == request.prodID)
+
+                    foreach (StockRequest request in StockRequest.requestItems/*getStockRequestTable()*/)
                     {
-                        var currentStock = item.StockLevel;
-                        var productName = item.ProductName;
-                        bool availbility = compareStock(currentStock, request.requestQuantity);
+                        //compare the productID of 2 lists, assign the productName & currentStock 
+                        if (item.ProductID == request.prodID)
+                        {
+                            var currentStock = item.StockLevel;
+                            var productName = item.ProductName;
+                            bool availbility = compareStock(currentStock, request.requestQuantity);
 
-                        displayedRequest.Add(new OwnerRequest(request, productName,currentStock, availbility));
+                            displayedRequest.Add(new OwnerRequest(request, productName, currentStock, availbility));
 
-                        Console.WriteLine("{0} {1} {2} {3} {4} {5}\n",
-                                          request.requestID,
-                                          request.storeID,
-                                          productName,
-                                          request.requestQuantity,
-                                          currentStock,
-                                          availbility);
-                    }//end of filter 
+                            Console.WriteLine("{0} {1} {2} {3} {4} {5}\n",
+                                              request.requestID,
+                                              request.storeID,
+                                              productName,
+                                              request.requestQuantity,
+                                              currentStock,
+                                              availbility);
+                        }//end of filter 
 
-                }//end of nested foreach loop
+                    }//end of nested foreach loop
 
-            }//end of outter loop
-            //return displayedRequest;
-
+                }//end of outter loop
+                 //return displayedRequest;
 
         }
-
-
 
 
 

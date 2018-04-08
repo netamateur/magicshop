@@ -22,9 +22,7 @@ namespace Assignment1.Models
         public enum storeList { MelbourneCBD = 1, EastMelbourne, NorthMelbourne, SouthMelbourne, WestMelbourne }
 
 
-        public enum storeList{MelbourneCBD=1,EastMelbourne=2,NorthMelbourne=3,SouthMelbourne=4,WestMelbourne=5 }
 
-        public List<Inventory> thresholdItems = new List<Inventory>();
 
         //Franchise Holder should take store obj as parameters to construct
         public FranchiseHolder()
@@ -38,8 +36,6 @@ namespace Assignment1.Models
         public void checkStoreInventory(int storeID)
         {
             string query = "SELECT Product.ProductID, Product.Name,StoreInventory.StockLevel from Product JOIN StoreInventory ON Product.ProductID = StoreInventory.ProductID where StoreInventory.StoreID = @storeID;";
-            SqlConnection conn = new SqlConnection(dm.ConnectionString);
-            conn.Open();
 
 
             try
@@ -245,10 +241,7 @@ namespace Assignment1.Models
             {
                 Console.WriteLine("Exception: {0}", e.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+           
 
 
         }
