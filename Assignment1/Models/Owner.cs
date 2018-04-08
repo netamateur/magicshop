@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Assignment1.Controller;
 
+
 namespace Assignment1.Models
 {
     public class Owner
@@ -14,6 +15,7 @@ namespace Assignment1.Models
 
         private static DataManager dm = DataManager.GetDataManager();
         private static List<Inventory> OwnerItems = new List<Inventory>();
+
         public static List<OwnerRequest> displayedRequest = new List<OwnerRequest>();
 
 
@@ -79,6 +81,7 @@ namespace Assignment1.Models
         }
 
 
+
         //a Lambda expression used to get the Availability of request
         private static bool compareStock(int x, int y) => x >= y;
 
@@ -86,7 +89,13 @@ namespace Assignment1.Models
 
         //Display all owner's received requests(StockRequest obj + currentStock + Availablity)
         public static void displayOwnerRequest()
+
         {
+            string query = "SELECT * FROM StockRequest;";
+
+            try
+            {
+                var requestTable = dm.fetchData(query, dm.ConnectionString);
 
             //for each item in OwnerInventory, loop the StockRequest list
             foreach(Inventory item in OwnerItems)
@@ -166,16 +175,20 @@ namespace Assignment1.Models
 
 
 
+
         }
+
 
 
 
         private static int reduceStock(int x, int y) => x - y;
 
+
         //process request and then delete request after processing
         //check availablity
         public static void processRequest(int requestID)
         {
+
             string query = "update OwnerInventory set StockLevel = @updateStock where ProductID = @productID;";
 
             foreach(OwnerRequest item in displayedRequest)
@@ -229,6 +242,7 @@ namespace Assignment1.Models
             }//end of foreach loop
             //3.delete the stockRequest in db - create a new method?
             deleteRequest(requestID);
+
 
         }
 

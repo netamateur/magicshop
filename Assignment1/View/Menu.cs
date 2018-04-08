@@ -114,8 +114,10 @@ namespace Assignment1
             //1 -2
             c.getStoreList();
 
+
             Console.WriteLine("Enter Store ID to shop at: ");
             var storeID = Int32.Parse(Console.ReadLine());
+
 
 
             Store.StoreFranchise storeLocation = (Store.StoreFranchise)storeID;

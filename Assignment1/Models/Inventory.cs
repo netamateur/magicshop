@@ -9,11 +9,15 @@ namespace Assignment1.Models
     {
         internal int ProductID { get; }
         internal string ProductName { get; }
-        internal int StockLevel { get; }
 
-        public Inventory(int productID, string pName, int stockLevel)
+        internal int StockLevel { get; set; }
+
+
+        public Inventory(int pID, string pName, int stockLevel)
         {
-            ProductID = productID;
+
+            ProductID = pID;
+
             ProductName = pName;
             StockLevel = stockLevel;
         }

@@ -7,11 +7,9 @@ namespace Assignment1.Models
 {
     public class Store
     {
-        public int StoreID { get; set; }
+        internal int StoreID { get; set; }
 
-        public string Name { get; set; }
-
-        //private ProductTypes Products { get; set; }
+        internal string Name { get; set; }
 
         public Store(int sID) => StoreID = sID;
 
@@ -24,6 +22,21 @@ namespace Assignment1.Models
             Westmelbourne = 5
 
         }
+
+
+
+        public Store(int sID) => StoreID = sID;
+
+        public enum StoreFranchise
+        {
+            MelbourneCBD = 1,
+            NorthMelbourne = 2,
+            EastMelbourne = 3,
+            SouthMelbourne = 4,
+            Westmelbourne = 5
+
+        }
+
 
     }
 }
